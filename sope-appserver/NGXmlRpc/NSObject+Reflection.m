@@ -92,7 +92,7 @@
   }
 #endif
 #else
-  assert(0) // NOT IMPLEMENTED
+  assert(0); // NOT IMPLEMENTED
 #endif // TODO_PORT_XML_RPC_REFLECTION
 }
 
