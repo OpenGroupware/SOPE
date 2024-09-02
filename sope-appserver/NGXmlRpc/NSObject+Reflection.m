@@ -21,7 +21,6 @@
 
 #include "common.h"
 #import <objc/objc.h>
-#import <objc/objc-api.h>
 #import <objc/Protocol.h>
 
 #if NeXT_RUNTIME || APPLE_RUNTIME
