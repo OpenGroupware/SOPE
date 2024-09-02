@@ -1,0 +1,36 @@
+name: Build and Test
+
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: "15 15 * * 1"
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        image:
+          - ubuntu:noble
+    container: ${{ matrix.image }}
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+      - name: Update APT
+      - name: Install Dependencies
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: libxml2-dev libldap2 libldap-dev libpq-dev libpq5 \
+            libmemcached-dev libmemcached-tools libcurl4-openssl-dev \
+            libcrypt-dev make libz-dev gobjc \
+            gnustep-make gnustep-base-runtime
+          version: 1.0
+      - name: Configure SOPE for Debug
+        run: ./configure \
+          --with-gnustep --enable-debug --enable-xml --enable-postgresql \
+          --enable-openldap --with-ssl=ssl \
+          --disable-strip
+      - name: Build SOPE
+        run: make all
