@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include ../Version
 -include ./Version
 
-ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol -Wno-infinite-recursion
 
 ADDITIONAL_INCLUDE_DIRS += \
 	-I..				\

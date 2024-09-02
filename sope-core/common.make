@@ -6,7 +6,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 include $(SKYROOT)/Version
 -include ./Version
 
-ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol -Wno-infinite-recursion
 ifeq ($(reentrant),yes)
 ADDITIONAL_CPPFLAGS += -D_REENTRANT=1
 endif

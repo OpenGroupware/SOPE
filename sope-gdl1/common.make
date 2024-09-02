@@ -8,7 +8,7 @@ include $(SKYROOT)/Version
 
 GNUSTEP_INSTALLATION_DIR = $(GNUSTEP_LOCAL_ROOT)
 
-ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol
+ADDITIONAL_CPPFLAGS += -pipe -Wall -Wno-protocol -Wno-infinite-recursion
 
 SOPEDIR="../.."
 
