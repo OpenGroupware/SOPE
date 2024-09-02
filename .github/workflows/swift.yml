@@ -28,7 +28,7 @@ jobs:
             gnustep-make gnustep-base-runtime
       - name: Configure SOPE for Debug
         run: ./configure \
-          --prefix=/usr/local \
+          --with-gnustep \
           --enable-debug \
           --disable-strip \
           --enable-xml \
