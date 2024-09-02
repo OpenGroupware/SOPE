@@ -9,7 +9,8 @@ VERSION=4.5.0
 SUBPROJECTS += \
 	NGObjWeb	\
 	WEExtensions	\
-	WOExtensions
+	WOExtensions	\
+	NGXmlRpc
 
 
 ifeq ($(frameworks),yes)
