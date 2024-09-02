@@ -18,8 +18,11 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-      - name: Update APT
-        run:  apt-get -y update
+      - name: Update APT and Install Cache Deps
+        run:  |
+          apt-get -y update
+          apt-get -y install curl
+          apt-get -y install sudo
       - name: Install Dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
