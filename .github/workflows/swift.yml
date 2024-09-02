@@ -20,12 +20,12 @@ jobs:
         uses: actions/checkout@v3
       - name: Update APT and Install Cache Deps
         run:  |
-          apt-get -y update
+          apt-get -y -qq update
           apt-get -y -qq install \
             libxml2-dev libldap2 libldap-dev libpq-dev libpq5 \
             libmemcached-dev libmemcached-tools libcurl4-openssl-dev \
             libcrypt-dev make libz-dev gobjc \
-            gnustep-make gnustep-base-runtime
+            gnustep-make gnustep-base-runtime libgnustep-base-dev
       - name: Configure SOPE for Debug
         run: ./configure \
           --with-gnustep \
