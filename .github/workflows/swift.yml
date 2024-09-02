@@ -21,8 +21,7 @@ jobs:
       - name: Update APT and Install Cache Deps
         run:  |
           apt-get -y update
-          apt-get -y install curl
-          apt-get -y install sudo
+          apt-get -y install curl sudo wget
       - name: Install Dependencies
         uses: awalsh128/cache-apt-pkgs-action@latest
         with:
