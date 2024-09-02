@@ -21,14 +21,14 @@ jobs:
       - name: Update APT and Install Cache Deps
         run:  |
           apt-get -y update
-          apt-get -y install \
+          apt-get -y -qq install \
             libxml2-dev libldap2 libldap-dev libpq-dev libpq5 \
             libmemcached-dev libmemcached-tools libcurl4-openssl-dev \
             libcrypt-dev make libz-dev gobjc \
             gnustep-make gnustep-base-runtime
       - name: Configure SOPE for Debug
         run: ./configure \
-          --with-gnustep --prefix=/usr/local \
+          --prefix=/usr/local \
           --enable-debug \
           --disable-strip \
           --enable-xml \
