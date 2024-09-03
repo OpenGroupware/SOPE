@@ -10,12 +10,16 @@ else
 FRAMEWORK_NAME = NGiCal
 endif
 
+ifneq ($(frameworks),yes)
+RESOURCES_DIR = $(SOPE_SAXMAPPINGS)/
+endif
 
 libNGiCal_PCH_FILE = common.h
-libNGiCal_HEADER_FILES_DIR         = .
-libNGiCal_HEADER_FILES_INSTALL_DIR = /NGiCal
-libNGiCal_SOVERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libNGiCal_INTERFACE_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)
+libNGiCal_INSTALL_DIR=$(SOPE_SYSLIBDIR)
 libNGiCal_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION).$(SUBMINOR_VERSION)
+
+libNGiCal_RESOURCES = NGiCal.xmap
 
 libNGiCal_HEADER_FILES =  		\
 	NGiCal.h			\
@@ -51,6 +55,10 @@ libNGiCal_HEADER_FILES =  		\
 	NGVCardValue.h			\
 
 #	IcalResponse.h			\
+
+libNGiCal_HEADER_FILES_DIR         = .
+libNGiCal_HEADER_FILES_INSTALL_DIR = /NGiCal
+
 
 libNGiCal_OBJC_FILES =    		\
 	NSCalendarDate+ICal.m		\
@@ -98,15 +106,19 @@ libNGiCal_OBJC_FILES =    		\
 
 # framework support
 
-NGiCal_PCH_FILE     = $(libNGiCal_PCH_FILE)
-NGiCal_HEADER_FILES = $(libNGiCal_HEADER_FILES)
-NGiCal_OBJC_FILES   = $(libNGiCal_OBJC_FILES)
-NGiCal_SUBPROJECTS  = $(libNGiCal_SUBPROJECTS)
+NGiCal_PCH_FILE       = $(libNGiCal_PCH_FILE)
+NGiCal_HEADER_FILES   = $(libNGiCal_HEADER_FILES)
+NGiCal_OBJC_FILES     = $(libNGiCal_OBJC_FILES)
+NGiCal_SUBPROJECTS    = $(libNGiCal_SUBPROJECTS)
+NGiCal_RESOURCE_FILES = $(libNGiCal_RESOURCES)
 
 
 # building
 
 -include GNUmakefile.preamble
+ifneq ($(FHS_INSTALL_ROOT),)
+GNUSTEP_HEADERS=$(DESTDIR)$(FHS_INSTALL_ROOT)/include
+endif
 ifneq ($(frameworks),yes)
 include $(GNUSTEP_MAKEFILES)/library.make
 else
