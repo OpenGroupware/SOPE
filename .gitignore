@@ -11,3 +11,5 @@ sope-gdl1/MySQL/MySQL.gdladaptor/
 sope-gdl1/PostgreSQL/PostgreSQL.gdladaptor/
 sope-xml/STXSaxDriver/STXSaxDriver.sax/
 sope-xml/libxmlSAXDriver/libxmlSAXDriver.sax/
+sope-ical/versitSaxDriver/versitSaxDriver.sax/
+
