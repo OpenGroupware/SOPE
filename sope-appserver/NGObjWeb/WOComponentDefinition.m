@@ -172,6 +172,10 @@ static BOOL enableClassLessComponents = NO;
 static BOOL enableWOOFiles            = NO;
 static NSArray *woxExtensions = nil;
 
++ (int)version {
+  return 4;
+}
+
 + (void)initialize {
   static BOOL isInitialized = NO;
   NSUserDefaults *ud;

@@ -39,6 +39,15 @@ typedef struct {
 
 @implementation NGCustomFileManager
 
++ (int)version {
+  return [super version] + 0 /* v0 */;
+}
++ (void)initialize {
+  NSAssert2([super version] == 0,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+}
+
 /* customization */
 
 - (NSString *)makeAbsolutePath:(NSString *)_path {

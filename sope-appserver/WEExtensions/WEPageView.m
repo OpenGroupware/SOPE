@@ -117,6 +117,10 @@ static NSNumber *YesNumber = nil;
   if (YesNumber == nil) YesNumber = [[NSNumber numberWithBool:YES] retain];
 }
 
++ (int)version {
+  return [super version] + 0;
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_subs
@@ -628,6 +632,10 @@ static inline NSString *WEPageLabelForKey(NSString *_key, WOContext *_ctx) {
 @end /* WEPageView */
 
 @implementation WEPageItem
+
++ (int)version {
+  return [super version] + 0;
+}
 
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config

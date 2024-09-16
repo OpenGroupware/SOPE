@@ -42,6 +42,10 @@
 
 static Class WOKeyPathAssociationClass = Nil;
 
++ (int)version {
+  return 2;
+}
+
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *s;

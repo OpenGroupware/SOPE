@@ -88,6 +88,10 @@
 
 @implementation WOFrame
 
++ (int)version {
+  return 1;
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_t

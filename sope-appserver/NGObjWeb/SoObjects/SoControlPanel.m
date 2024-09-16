@@ -29,6 +29,10 @@
 
 @implementation SoControlPanel
 
++ (int)version {
+  return 1;
+}
+
 - (id)handleQueryWithUnboundKey:(NSString *)_key {
   return [self lookupName:_key 
 	       inContext:[[WOApplication application] context]

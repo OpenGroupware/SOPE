@@ -45,6 +45,10 @@ static NSNumber *YesNumber;
     YesNumber = [[NSNumber numberWithBool:YES] retain];
 }
 
++ (int)version {
+  return [super version] + 0;
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_t

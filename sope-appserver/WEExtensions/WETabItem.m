@@ -38,6 +38,9 @@ extern NSString *WETabView_COLLECT;
 
 static Class StrClass = Nil;
 
++ (int)version {
+  return [super version] + 0;
+}
 + (void)initialize {
   StrClass = [NSString class];
 }

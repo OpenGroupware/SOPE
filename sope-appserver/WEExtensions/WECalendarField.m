@@ -27,7 +27,14 @@ static Class StrClass = Nil;
 
 @implementation WECalendarField
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
+
 + (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
   StrClass = [NSString class];
 }
 

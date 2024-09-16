@@ -95,6 +95,10 @@ static Class NSMutableDataClass = NULL;
 
 static NGMimeHeaderNames *HeaderNames = NULL;
 
++ (int)version {
+  return 3;
+}
+
 static int MimeLogEnabled = -1;
 
 + (void)initialize {

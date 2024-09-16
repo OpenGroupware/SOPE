@@ -110,6 +110,9 @@ static Class         CompoundElemClass = Nil;
 static NSNumber      *yesNum   = nil;
 static WOAssociation *yesAssoc = nil;
 
++ (int)version {
+  return 1;
+}
 + (void)initialize {
   NSUserDefaults  *ud;
   NGLoggerManager *lm;

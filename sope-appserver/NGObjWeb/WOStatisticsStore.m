@@ -59,6 +59,10 @@ static Class NSNumberClass    = Nil;
 static Class NSStringClass    = Nil;
 static BOOL  runMultithreaded = NO;
 
++ (int)version {
+  return 1;
+}
+
 + (void)initialize {
   NSNumberClass = [NSNumber class];
   NSStringClass = [NSString class];

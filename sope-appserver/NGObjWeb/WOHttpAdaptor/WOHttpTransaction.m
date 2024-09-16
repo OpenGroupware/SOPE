@@ -71,6 +71,9 @@ static NGLogger *perfLogger        = nil;
 static NGLogger *transActionLogger = nil;
 static NSDictionary *standardCapitalizedHeaders = nil;
 
++ (int)version {
+  return 2;
+}
 + (void)initialize {
   NSUserDefaults  *ud;
   NGLoggerManager *lm;

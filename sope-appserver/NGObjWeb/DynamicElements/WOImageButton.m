@@ -56,6 +56,10 @@
 
 @implementation WOImageButton
 
++ (int)version {
+  return 2;
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_t

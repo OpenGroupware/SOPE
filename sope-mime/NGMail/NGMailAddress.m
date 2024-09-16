@@ -24,6 +24,10 @@
 
 @implementation NGMailAddress
 
++ (int)version {
+  return 2;
+}
+
 + (id)mailAddressWithAddress:(NSString *)_address
   displayName:(NSString *)_owner
   route:(NSString *)_route

@@ -31,6 +31,10 @@ NGMime_DECLARE NSString *NGMimeContentDispositionFormType       = @"form-data";
 
 static int MimeLogEnabled = -1;
 
++ (int)version {
+  return 2;
+}
+
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   

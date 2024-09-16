@@ -30,6 +30,15 @@
 
 @implementation WOLabelAssociation
 
++ (int)version {
+  return [super version] /* v2 */;
+}
++ (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+}
+
 - (id)initWithKey:(NSString *)_key inTable:(NSString *)_table
   withDefaultValue:(NSString *)_default
 {

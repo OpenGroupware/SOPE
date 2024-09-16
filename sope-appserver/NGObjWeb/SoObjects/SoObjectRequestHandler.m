@@ -59,13 +59,20 @@ static NSString *rapidTurnAroundPath = nil;
 
 static NSString *redirectURISafetySuffix = nil;
 
++ (int)version {
+  return [super version] + 0 /* 2 */;
+}
 + (void)initialize {
   static BOOL     didInit = NO;
   NSUserDefaults  *ud;
   NGLoggerManager *lm;
 
   if (didInit) return;
+
   didInit = YES;
+  NSAssert2([super version] == 2,
+	    @"invalid superclass (%@) version %i !",
+	    NSStringFromClass([self superclass]), [super version]);
 
   lm          = [NGLoggerManager defaultLoggerManager];
   logger      = [lm loggerForClass:self];

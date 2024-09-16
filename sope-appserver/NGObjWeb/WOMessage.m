@@ -48,7 +48,7 @@ static WOMessageProfileInfo profiletot = { 0, 0, 0, 0, 0 };
 
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
-   
+  
   if (NSStringClass == Nil)
     NSStringClass = [NSString class];
   
@@ -66,6 +66,10 @@ static WOMessageProfileInfo profiletot = { 0, 0, 0, 0, 0 };
     defaultEncoding = [NSStringClass defaultCStringEncoding];
 #endif
   }
+}
+
++ (int)version {
+  return 5;
 }
 
 + (void)setDefaultEncoding:(NSStringEncoding)_encoding {

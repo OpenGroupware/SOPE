@@ -178,6 +178,10 @@ typedef union {
 
 @implementation WOKeyPathAssociation
 
++ (int)version {
+  return 2;
+}
+
 static Class NumberClass = Nil;
 static Class StringClass = Nil;
 #if NeXT_Foundation_LIBRARY || COCOA_Foundation_LIBRARY || \
@@ -203,7 +207,11 @@ static NSNumber *uinum0 = nil, *uinum1 = nil;
 
   if (isInitialized) return;
   isInitialized = YES;
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
 
+  
   debugOn = [[[NSUserDefaults standardUserDefaults]
                               objectForKey:@"WODebugKeyPathAssociation"]
                               boolValue] ? 1 : 0;

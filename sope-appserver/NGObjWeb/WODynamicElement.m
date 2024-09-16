@@ -43,8 +43,16 @@ static Class FormClass              = Nil;
 static Class FormElementClass       = Nil;
 static Class WOBoolAssociationClass = Nil;
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
+
 + (void)initialize {
   static BOOL isInitialized = NO;
+  
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
   
   if (!isInitialized) {
     isInitialized = YES;

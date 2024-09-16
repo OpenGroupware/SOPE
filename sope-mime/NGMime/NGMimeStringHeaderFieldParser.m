@@ -29,6 +29,9 @@
 
 static BOOL StripLeadingSpaces = NO;
 
++ (int)version {
+  return 2;
+}
 + (void)initialize {
   StripLeadingSpaces = [self doesStripLeadingSpaces];
 }

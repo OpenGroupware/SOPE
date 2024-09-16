@@ -29,7 +29,13 @@
 
 static Class StrClass = Nil;
 
++ (int)version {
+  return [super version] /* v2 */;
+}
 + (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
   StrClass = [NSString class];
 }
 

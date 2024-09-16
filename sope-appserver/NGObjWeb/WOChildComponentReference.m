@@ -35,7 +35,14 @@
 static int profileComponents = -1;
 static Class NSDateClass = Nil;
 
++ (int)version {
+  return 2;
+}
 + (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+
   if (profileComponents == -1) {
     profileComponents = [[[NSUserDefaults standardUserDefaults]
                                           objectForKey:@"WOProfileComponents"]
