@@ -68,6 +68,10 @@ static NSString *defaultCompRqHandlerClassName = @"OWViewRequestHandler";
 static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
 #endif
 
++ (int)version {
+  return [super version] + 5 /* v6 */;
+}
+
 /* old license checks */
 
 - (NSCalendarDate *)appExpireDate {

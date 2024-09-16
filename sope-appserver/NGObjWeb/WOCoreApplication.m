@@ -76,6 +76,10 @@ static Class    NSDateClass      = Nil;
 static NGLogger *logger          = nil;
 static NGLogger *perfLogger      = nil;
 
++ (int)version {
+  return 1;
+}
+
 NGObjWeb_DECLARE id WOApp = nil;
 static NSMutableArray *activeApps = nil; // THREAD
 
