@@ -709,6 +709,8 @@ static NSString *NGEnvVarPathSeparator = @":";
   if ((info = [(NSDictionary *)info objectForKey:@"bundleManagerVersion"])) {
     if ([info intValue] > [[self class] version]) {
       /* bundle manager version does not match ... */
+      NSLog(@"Bundle manager version does not match '%@' !", _path);
+      assert("Bundle Manager version...");
       return nil;
     }
   }
