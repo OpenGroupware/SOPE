@@ -95,8 +95,63 @@ static int _getClassHook(const char *className) {
   
   return 1;
 }
+#endif // NEXT/APPLE RUNTIME
 
+#if GNU_RUNTIME
+#include <objc/runtime.h>
+
+static Class (*oldClassLoadHook)(const char *_name) = NULL;
+
+static inline BOOL _isValidClassName(const char *_name) {
+  register int len;
+
+  if (_name == NULL) return NO;
+
+  for (len = 0; (len < 256) && (*_name != '\0'); len++, _name++) {
+    if (*_name != '_') {
+      if (!isalnum((int)*_name))
+        return NO;
+    }
+  }
+  return (len == 256) ? NO : YES;
+}
+
+static Class _classLoadHook(const char *_name) {
+  static BOOL debugOn = NO;
+  if (_isValidClassName(_name)) {
+    static NGBundleManager *manager = nil;
+    NSBundle *bundle;
+
+    if (debugOn) 
+      NSLog(@"%s: look for class %s", __PRETTY_FUNCTION__, _name);
+    if (manager == nil)
+      manager = [NGBundleManager defaultBundleManager];
+    
+    bundle  = [manager bundleForClassNamed:[NSString stringWithCString:_name]];
+    if (bundle != nil) {
+      if (debugOn)
+        NSLog(@"%s: found bundle %@", __PRETTY_FUNCTION__, [bundle bundlePath]);
+      
+      if ([manager loadBundle:bundle]) {
+        Class clazz;
+#if 1 // hh(2024-09-23): new GNU runtime
+        // lookUpClass does not invoke the handler,
+        // getClass does.
+        clazz = objc_lookUpClass(_name);
+#else
+        void *hook = _objc_lookup_class;
+        _objc_lookup_class = NULL;
+        clazz = objc_lookup_class(_name);
+        _objc_lookup_class = hook;
 #endif
+
+        if (clazz) return clazz;
+      }
+    }
+  }
+  return (oldClassLoadHook != NULL) ? oldClassLoadHook(_name) : Nil;
+}
+#endif // GNU_RUNTIME
 
 NSString *NGBundleWasLoadedNotificationName = @"NGBundleWasLoadedNotification";
 
@@ -180,6 +235,25 @@ static NSString *NGEnvVarPathSeparator = @":";
   if (defaultManager == nil) {
     defaultManager = [[NGBundleManager alloc] init];
   }
+#if NeXT_RUNTIME || APPLE_RUNTIME
+  {
+    static BOOL didRegisterCallback = NO;
+        
+    if (!didRegisterCallback) {
+      didRegisterCallback = YES;
+      objc_setClassHandler(_getClassHook);
+    }
+  }
+  #elif GNU_RUNTIME
+    static objc_get_unknown_class_handler _objc_lookup_class = NULL;
+    if (_objc_lookup_class != _classLoadHook) {
+      oldClassLoadHook = _objc_lookup_class;
+      _objc_lookup_class = _classLoadHook;
+      #if 1 // hh(2024-09-23): new GNU runtime
+      objc_setGetUnknownClassHandler(_objc_lookup_class);
+      #endif 
+    }
+  #endif
 
   return defaultManager;
 }
