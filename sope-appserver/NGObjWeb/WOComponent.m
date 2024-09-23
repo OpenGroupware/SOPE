@@ -94,6 +94,8 @@ static BOOL  wakeupPageOnCreation              = NO;
   
   if ((debugTakeValues = [ud boolForKey:@"WODebugTakeValues"]))
     NSLog(@"WOComponent: WODebugTakeValues on.");
+  if ((debugTemplates = [ud boolForKey:@"WODebugTemplates"]))
+    NSLog(@"WOComponent: WODebugTemplates on.");
   
   abortOnAwakeComponentInCtxDealloc = 
     [ud boolForKey:@"WOCoreOnAwakeComponentInCtxDealloc"];
