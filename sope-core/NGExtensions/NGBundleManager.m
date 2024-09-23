@@ -2083,3 +2083,13 @@ static BOOL debugLanguageLookup = NO;
 #endif
 
 @end /* NGBundle */
+
+Class NGClassFromString(NSString *aClassName) {
+  if (aClassName == nil) return Nil;
+
+  int  len = [aClassName length];
+  char buf[len+1];
+  
+  [aClassName getCString:buf maxLength:len + 1 encoding: NSASCIIStringEncoding];
+  return objc_getClass(buf);
+}

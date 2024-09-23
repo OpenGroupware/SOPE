@@ -209,4 +209,8 @@ typedef BOOL (*NGBundleResourceSelector)(NSString        *_resourceName,
 @interface NGBundle : NSBundle
 @end
 
+// Like NSClassFromString, but can lookup classes at runtime on the GNU runtime,
+// but not yet on a current NeXT runtime.
+extern Class NGClassFromString(NSString *aClassName);
+
 #endif
