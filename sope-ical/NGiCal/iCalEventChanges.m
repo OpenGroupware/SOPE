@@ -125,7 +125,7 @@
     [self->updatedProperties addObject:@"created"];
   if(!IS_EQUAL([_from lastModified], [_to lastModified], isEqualToDate:))
     [self->updatedProperties addObject:@"lastModified"];
-  if(![_from durationAsTimeInterval] == [_to durationAsTimeInterval])
+  if([_from durationAsTimeInterval] != [_to durationAsTimeInterval])
     [self->updatedProperties addObject:@"duration"];
   if(!IS_EQUAL([_from summary], [_to summary], isEqualToString:))
     [self->updatedProperties addObject:@"summary"];
