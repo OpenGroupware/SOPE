@@ -275,7 +275,7 @@ static void setLocator(void *udata, xmlSAXLocatorPtr _locator);
   return r;
 }
 - (int)pushEOF {
-  char dummyByte;
+  char dummyByte = 10;
   int r;
   r = htmlParseChunk(self->ctxt, &dummyByte, 0, 1 /* terminate */);
   self->doc = ((xmlParserCtxtPtr)ctxt)->myDoc;
