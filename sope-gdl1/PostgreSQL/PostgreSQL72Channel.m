@@ -221,7 +221,7 @@ static int openConnectionCount = 0;
   openConnectionCount++;
 
   if (isDebuggingEnabled) {
-    NSLog(@"PostgreSQL72 channel 0x%p opened (connection=%@, count=%d)",
+    NSLog(@"PostgreSQL72 channel %p opened (connection=%@, count=%d)",
           self, self->connection, openConnectionCount);
   }
   return YES;
@@ -251,7 +251,7 @@ static int openConnectionCount = 0;
     openConnectionCount--;
     
     if (isDebuggingEnabled) {
-      NSLog(@"PostgreSQL72 connection dropped 0x%p (channel=0x%p, count=%d)",
+      NSLog(@"PostgreSQL72 connection dropped %p (channel=%p, count=%d)",
             self->connection, self, openConnectionCount);
     }
     [self->connection release];
@@ -643,7 +643,7 @@ static int openConnectionCount = 0;
   }
 
   if (isDebuggingEnabled)
-    NSLog(@"PG0x%p SQL: %@", self, _expression);
+    NSLog(@"PG%p SQL: %@", self, _expression);
   
   [self _resetEvaluationState];
   
@@ -710,7 +710,7 @@ static int openConnectionCount = 0;
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]:", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]:", self, NSStringFromClass([self class])];
   if (self->connection)
     [ms appendFormat:@" connection=%@", self->connection];
   else

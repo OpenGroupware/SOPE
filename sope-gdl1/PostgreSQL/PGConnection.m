@@ -209,9 +209,9 @@ static BOOL debugOn = NO;
   NSMutableString *ms;
 
   ms = [NSMutableString stringWithCapacity:128];
-  [ms appendFormat:@"<0x%p[%@]: ", self, NSStringFromClass([self class])];
+  [ms appendFormat:@"<%p[%@]: ", self, NSStringFromClass([self class])];
   if ([self isValid])
-    [ms appendFormat:@" connection=0x%p", self->_connection];
+    [ms appendFormat:@" connection=%p", self->_connection];
   else
     [ms appendString:@" not-connected"];
   [ms appendString:@">"];
