@@ -129,7 +129,7 @@ typedef struct objc_method      *Method_t;
     }
   }
 #else
-#  warning TODO: implement on NeXT/Apple runtime!
+#  warning TODO: implement on NeXT/Apple/modern GNUstep runtime!
   class = [self targetClass];
 #endif
 
