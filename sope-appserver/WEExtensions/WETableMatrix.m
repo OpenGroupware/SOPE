@@ -402,7 +402,7 @@ static NSNumber *numForUInt(unsigned int i) {
 
     /* left/top edge */
     if (numOfLeftLabels > 0) {
-      char buf[8];
+      char buf[12];
       NSString *s;
       
       sprintf(buf, "%i", numOfLeftLabels);
