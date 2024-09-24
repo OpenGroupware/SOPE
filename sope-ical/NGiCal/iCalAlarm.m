@@ -22,6 +22,10 @@
 #include "iCalAlarm.h"
 #include "common.h"
 
+@interface iCalObject(Private)
+- (void)takeValue:(id)_value forXKey:(id)_key;
+@end
+
 @implementation iCalAlarm
 
 - (void)dealloc {
