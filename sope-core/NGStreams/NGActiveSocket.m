@@ -246,7 +246,7 @@
     else if ([clazz instancesRespondToSelector:@selector(initWithSocket:)])
       e = [(id)e initWithSocket:self];
     else if ([clazz instancesRespondToSelector:@selector(initWithStream:)])
-      e = [(id)e initWithStream:self];
+      e = [(NGStreamException *)e initWithStream:self];
     else
       e = [e initWithReason:_reason];
   }
@@ -254,7 +254,7 @@
     if ([clazz instancesRespondToSelector:@selector(initWithSocket:)])
       e = [(id)e initWithSocket:self];
     else if ([clazz instancesRespondToSelector:@selector(initWithStream:)])
-      e = [(id)e initWithStream:self];
+      e = [(NGStreamException *)e initWithStream:self];
     else
       e = [e init];
   }
@@ -753,10 +753,12 @@
           break;
 
         case ECONNRESET:
-          e = [[NGSocketConnectionResetException alloc] initWithStream:self];
+          e = [(NGStreamException *)
+            [NGSocketConnectionResetException alloc] initWithStream:self];
           break;
         case ETIMEDOUT:
-          e = [[NGSocketTimedOutException alloc] initWithStream:self];
+          e = [(NGStreamException *)[NGSocketTimedOutException alloc] 
+                initWithStream:self];
           break;
 
         case EWOULDBLOCK:
@@ -1095,7 +1097,8 @@
     case NGStreamMode_writeOnly: result = @"w";        break;
     case NGStreamMode_readWrite: result = @"rw";       break;
     default:
-      [[[NGUnknownStreamModeException alloc] initWithStream:self] raise];
+      [[(NGStreamException *)[NGUnknownStreamModeException alloc] 
+        initWithStream:self] raise];
       break;
   }
   return result;
