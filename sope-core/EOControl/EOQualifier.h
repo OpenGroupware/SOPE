@@ -232,7 +232,8 @@ extern SEL EOQualifierOperatorCaseInsensitiveLike;
 - (BOOL)isGreaterThanOrEqualTo:(id)_object;
 - (BOOL)doesContain:(id)_object;
 - (BOOL)isLike:(NSString *)_object;
-- (BOOL)isCaseInsensitiveLike:(NSString *)_object;
+// hh(2024-09-24): `NSString *` conflicts w/ NSScriptWhoseTests.h (gsbase)
+- (BOOL)isCaseInsensitiveLike:(id)_object;
 @end
 
 @interface NSObject(EOQualifierTransformer)

@@ -60,7 +60,8 @@ static EONull *null = nil;
 - (BOOL)isLike:(NSString *)_object {
   return NO;
 }
-- (BOOL)isCaseInsensitiveLike:(NSString *)_object {
+- (BOOL)isCaseInsensitiveLike:(id/*NSString **/)_object {
+  // hh(2024-09-24): `NSString *` conflicts w/ NSScriptWhoseTests.h (gsbase)
   return NO;
 }
 
