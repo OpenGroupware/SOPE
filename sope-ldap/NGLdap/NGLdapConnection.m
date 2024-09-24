@@ -704,7 +704,16 @@ static void freeMods(LDAPMod **mods) {
   rc = ldap_create_sort_control_value(self->handle, keys, &control_value);
   if (LDAP_SUCCESS == rc) {
     ctrls = malloc(2 * sizeof(LDAPControl));
-    rc = ldap_control_create(LDAP_CONTROL_SORTREQUEST, LDAP_OPT_ON, &control_value, 1, ctrls);
+    // hh(2024-09-24): Not sure what is proper here.
+    // LBER_V( char ) ber_pvt_opt_on;
+    // LDAP_OPT_ON ((void *) &ber_pvt_opt_on)
+    rc = ldap_control_create(
+      LDAP_CONTROL_SORTREQUEST,  // const char* requestOID
+      ber_pvt_opt_on, // HH: instead of LDAP_OPT_ON, int "iscritical"
+      &control_value,  // struct berval*
+      1,  // dupval
+      ctrls
+    );
     if (LDAP_SUCCESS == rc) {
       ctrls[1] = NULL;
       struct timeval tv_timelimit, *tv_timelimitp = NULL;
