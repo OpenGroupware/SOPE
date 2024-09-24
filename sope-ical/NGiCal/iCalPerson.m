@@ -202,7 +202,7 @@
 
 /* comparison */
 
-- (unsigned)hash {
+- (NSUInteger)hash {
   if([self email])
     return [[self email] hash];
   return [super hash];
