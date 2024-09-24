@@ -1,6 +1,6 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
-
+  
   This file is part of SOPE.
 
   SOPE is free software; you can redistribute it and/or modify it under
@@ -195,14 +195,9 @@ static NSArray *blacklist = nil;
   NSString       *actionName;
   NSEnumerator   *sels;
   NSString       *sel;
-  unsigned len;
-  Class clazz;
 
-  clazz      = [self class];
   signatures = [NSMutableArray arrayWithCapacity:4];
   actionName = [self selectorForXmlRpcAction:_xmlrpcMethod];
-  
-  len = [actionName length];
   
   sels = [[self respondsToSelectors] objectEnumerator];
   while ((sel = [sels nextObject])) {
