@@ -465,7 +465,7 @@ static NSDictionary *defaultAssocMap = nil;
     return ValAssoc;
   
   // TODO: WOxElemBuilder caches the classes
-  return NSClassFromString([defaultAssocMap objectForKey:_uri]);
+  return NGClassFromString([defaultAssocMap objectForKey:_uri]);
 }
 
 - (void)addAttributes:(NSDictionary *)_attrs
@@ -571,7 +571,7 @@ static NSDictionary *defaultAssocMap = nil;
   }
   
   if (ChildRefClass == Nil)
-    ChildRefClass = NSClassFromString(@"WOChildComponentReference");
+    ChildRefClass = NGClassFromString(@"WOChildComponentReference");
   
   cname = [self _uniqueComponentNameForDefinitionWithName:_element];
   
@@ -610,7 +610,7 @@ static NSDictionary *defaultAssocMap = nil;
          <#WOString var:value="abc" />
          <WEBOBJECT NAME="WOString" var:value="abc"></WEBOBJECT>
     */
-    if ((elementClass = NSClassFromString(_element)) == nil) {
+    if ((elementClass = NGClassFromString(_element)) == nil) {
       /* ok, we also do not have a matching class */
       
       [self errorWithFormat:
@@ -743,7 +743,7 @@ static NSDictionary *defaultAssocMap = nil;
 
 - (Class)componentClass {
   if (self->componentClass == nil)
-    self->componentClass = NSClassFromString(self->componentName);
+    self->componentClass = NGClassFromString(self->componentName);
   
   return self->componentClass;
 }

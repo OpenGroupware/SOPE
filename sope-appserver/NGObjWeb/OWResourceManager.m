@@ -859,7 +859,7 @@ _pathExists(OWResourceManager *self, NSFileManager *fm, NSString *path)
   if (rapidTurnAroundPath != nil)
     return rapidTurnAroundPath;
   
-  if ((clazz = NSClassFromString(_name)) == nil)
+  if ((clazz = NGClassFromString(_name)) == nil)
     return nil;
   
   return [[NSBundle bundleForClass:clazz] bundlePath];

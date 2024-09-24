@@ -396,7 +396,7 @@ static NSString *redirectURISafetySuffix = nil;
   /* create dispatcher */
   
   if (rqType != nil) [_ctx setSoRequestType:rqType];
-  if ((dispatcher = NSClassFromString(dpClass)) == nil) {
+  if ((dispatcher = NGClassFromString(dpClass)) == nil) {
     [self errorWithFormat:@"did not find dispatcher class '%@'", dpClass];
     return nil;
   }
@@ -448,7 +448,7 @@ static NSString *redirectURISafetySuffix = nil;
     if (rendererClass) {
       Class clazz;
       
-      if ((clazz = NSClassFromString(rendererClass)) == Nil) {
+      if ((clazz = NGClassFromString(rendererClass)) == Nil) {
         [self errorWithFormat:@"did not find class of selected renderer %@", 
                 rendererClass];
       }

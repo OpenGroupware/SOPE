@@ -483,7 +483,7 @@ static NSString *NGEnvVarPathSeparator = @":";
     hookDoLookup = NO;
 #endif
 
-    NSMapInsert(self->classToBundle, NSClassFromString(v), _bundle);
+    NSMapInsert(self->classToBundle, NGClassFromString(v), _bundle);
     NSMapInsert(self->classNameToBundle, v, _bundle);
     
 #if NeXT_RUNTIME || APPLE_RUNTIME
@@ -724,7 +724,7 @@ static NSString *NGEnvVarPathSeparator = @":";
     [self debugWithFormat:@"lookup bundle handler %@ of bundle: %@",
 	    handler, _bundle];
     
-    if ((handler = NSClassFromString(handler)) == nil) {
+    if ((handler = NGClassFromString(handler)) == nil) {
       NSLog(@"ERROR: did not find handler class %@ of bundle %@.",
             [_bundleInfo objectForKey:@"bundleHandler"], [_bundle bundlePath]);
       handler = [_bundle principalClass];
@@ -962,7 +962,7 @@ static NSString *NGEnvVarPathSeparator = @":";
       if ((className = [i objectForKey:@"name"]) == nil)
         continue;
 
-      if ((clazz = NSClassFromString(className)) == Nil)
+      if ((clazz = NGClassFromString(className)) == Nil)
         continue;
       
       if ([i objectForKey:@"exact-version"]) {
@@ -2057,7 +2057,7 @@ static BOOL debugLanguageLookup = NO;
   if ((cname = [[self infoDictionary] objectForKey:@"NSPrincipalClass"]) ==nil)
     return Nil;
   
-  if ((c = NSClassFromString(cname)) != Nil)
+  if ((c = NGClassFromString(cname)) != Nil)
     return c;
   
   NSLog(@"%s: did not find principal class named '%@' of bundle %@, dict: %@",
@@ -2088,7 +2088,7 @@ Class NGClassFromString(NSString *aClassName) {
   if (aClassName == nil) return Nil;
 
   int  len = [aClassName length];
-  char buf[len+1];
+  char buf[len + 1];
   
   [aClassName getCString:buf maxLength:len + 1 encoding: NSASCIIStringEncoding];
   return objc_getClass(buf);

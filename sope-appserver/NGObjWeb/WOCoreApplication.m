@@ -309,7 +309,7 @@ static NSMutableArray *activeApps = nil; // THREAD
   Class     adaptorClass = Nil;
   WOAdaptor *adaptor     = nil;
 
-  adaptorClass = NSClassFromString(_name);
+  adaptorClass = NGClassFromString(_name);
   if (adaptorClass == Nil) {
     [self errorWithFormat:@"did not find adaptor class %@", _name];
     return nil;

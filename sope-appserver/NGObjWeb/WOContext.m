@@ -84,7 +84,7 @@ static NSURL    *redirectURL         = nil;
     MutableStrClass = [NSMutableString class];
   
   cn             = [ud stringForKey:@"WOContextClass"];
-  WOContextClass = NSClassFromString(cn);
+  WOContextClass = NGClassFromString(cn);
   NSAssert1(WOContextClass != Nil,
             @"Couldn't instantiate WOContextClass (%@)!", cn);
 

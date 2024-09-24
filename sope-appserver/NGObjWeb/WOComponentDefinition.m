@@ -266,7 +266,7 @@ static NSArray *woxExtensions = nil;
 }
 - (Class)componentClass {
   if (self->componentClass == Nil)
-    self->componentClass = NSClassFromString(self->name);
+    self->componentClass = NGClassFromString(self->name);
   
   if (self->componentClass != Nil)
     return self->componentClass;

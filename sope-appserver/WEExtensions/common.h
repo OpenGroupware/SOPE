@@ -126,7 +126,7 @@ static inline WOElement *WECreateElement(NSString *_className,
   WOElement           *result = nil;
   NSMutableDictionary *config = nil;
   
-  if ((c = NSClassFromString(_className)) == Nil) {
+  if ((c = NGClassFromString(_className)) == Nil) {
     NSLog(@"%s: missing '%@' class", __PRETTY_FUNCTION__, _className);
     return nil;
   }

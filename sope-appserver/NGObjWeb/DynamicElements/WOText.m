@@ -66,7 +66,7 @@
         className = [className autorelease];
         
         className = [className valueInComponent:nil];
-        className = NSClassFromString(className);
+        className = NGClassFromString(className);
         className = [[className alloc] init];
 
         self->formatter = [WOAssociation associationWithValue:className];

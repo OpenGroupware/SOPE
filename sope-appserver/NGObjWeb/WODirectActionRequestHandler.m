@@ -181,7 +181,7 @@ static Class NSDateClass = Nil;
   if ([actionName length] == 0)
     actionName = @"default";
 
-  if ((*(&actionClass) = NSClassFromString(actionClassName)) == Nil) {
+  if ((*(&actionClass) = NGClassFromString(actionClassName)) == Nil) {
     [self errorWithFormat:@"did not find direct action class %@",
             actionClassName];
     actionClass = [WODirectAction class];

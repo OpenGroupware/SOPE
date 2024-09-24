@@ -39,7 +39,7 @@
 @implementation WOCoreApplication(XmlRpcActionClass)
 
 - (Class)defaultActionClassForRequest:(WORequest *)_request {
-  return NSClassFromString(@"DirectAction");
+  return NGClassFromString(@"DirectAction");
 }
 
 @end

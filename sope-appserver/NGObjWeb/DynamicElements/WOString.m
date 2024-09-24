@@ -435,7 +435,7 @@ static WOAssociation *yesAssoc = nil;
         if (![assoc isValueConstant])
           [self logWithFormat:@"non-constant 'formatterClass' binding!"];
         className = [assoc stringValueInComponent:nil];
-        clazz     = NSClassFromString(className);
+        clazz     = NGClassFromString(className);
         
         if ((assoc = [OWGetProperty(_config, @"format") autorelease])) {
           NSString *format = nil;

@@ -770,7 +770,7 @@ _pathExists(WOResourceManager *self, NSFileManager *fm, NSString *path)
        problems. It is required for loading components from bundles.
     */
     if ((_framework = rapidTurnAroundPath) == nil) {
-      if ((clazz = NSClassFromString(_nameOrURL)))
+      if ((clazz = NGClassFromString(_nameOrURL)))
 	_framework = [[NSBundle bundleForClass:clazz] bundlePath];
     }
   }
