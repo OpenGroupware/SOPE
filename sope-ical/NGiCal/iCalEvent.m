@@ -282,7 +282,6 @@
   */
   unsigned       i, len;
   NSTimeInterval ti;
-  BOOL           isTime;
   int            val;
     
   if (![self hasPrefix:@"P"]) {
@@ -292,12 +291,12 @@
     
   ti  = 0.0;
   val = 0;
-  for (i = 1, len = [self length], isTime = NO; i < len; i++) {
+  for (i = 1, len = [self length]; i < len; i++) {
     unichar c;
       
     c = [self characterAtIndex:i];
     if (c == 't' || c == 'T') {
-      isTime = YES;
+      // unused: isTime = YES;
       val = 0;
       continue;
     }
