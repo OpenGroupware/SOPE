@@ -765,7 +765,7 @@ static BOOL debugOn = NO;
   return debugOn;
 }
 - (NSString *)loggingPrefix {
-  return [NSString stringWithFormat:@"|Rq:%@ 0x%p|",
+  return [NSString stringWithFormat:@"|Rq:%@ %p|",
                      [self method], self];
 }
 

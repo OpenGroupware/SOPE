@@ -67,7 +67,7 @@ static inline Class NSStringClass(void) {
 
 - (NSString *)loggingPrefix {
   /* improve perf ... */
-  return [NSStringClass() stringWithFormat:@"<0x%p[%@]>",
+  return [NSStringClass() stringWithFormat:@"<%p[%@]>",
                        self, NSStringFromClass([self class])];
 }
 

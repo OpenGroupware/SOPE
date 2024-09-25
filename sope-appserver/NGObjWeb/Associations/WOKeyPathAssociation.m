@@ -1500,7 +1500,7 @@ static BOOL _setValue(WOKeyPathAssociation *self, id _value, id root) {
 }
 
 - (NSString *)description {
-  return [StringClass stringWithFormat:@"<%@[0x%p]: keyPath=%@>",
+  return [StringClass stringWithFormat:@"<%@[%p]: keyPath=%@>",
                         NSStringFromClass([self class]), self,
                         [self keyPath]];
 }

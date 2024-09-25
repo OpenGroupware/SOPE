@@ -205,7 +205,7 @@ _pathExists(WOResourceManager *self, NSFileManager *fm, NSString *path)
 }
 - (NSString *)loggingPrefix {
   char buf[32];
-  sprintf(buf, "[wo-rm-0x%p]", self);
+  sprintf(buf, "[wo-rm-%p]", self);
   return [NSString stringWithCString:buf];
 }
 

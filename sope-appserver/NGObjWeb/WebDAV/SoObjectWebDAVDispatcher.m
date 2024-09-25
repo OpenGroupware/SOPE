@@ -1792,7 +1792,7 @@ static NSTimeZone                *gmt      = nil;
   NSMutableString *ms;
   
   ms = [NSMutableString stringWithCapacity:64];
-  [ms appendFormat:@"<0x%p[%@]:", self,
+  [ms appendFormat:@"<%p[%@]:", self,
         NSStringFromClass((Class)*(void**)self)];
   
   if (self->object)
