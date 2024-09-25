@@ -547,8 +547,11 @@ typedef enum {
   else {
     /* we're out of ready children, sleep a bit to avoid hogging the CPU */
     usleep(OUT_OF_CHILD_SLEEPTIME);
-    if (outOfChildSleepCount % OUT_OF_CHILD_LOG_INTERVAL == 0) {
-      [self errorWithFormat: @"No child available to handle incoming request!"];
+    // hh(2024-09-25): makes no sense for single child setups.
+    if (numberOfChildren > 1) {
+      if (outOfChildSleepCount % OUT_OF_CHILD_LOG_INTERVAL == 0) {
+        [self errorWithFormat: @"No child available to handle incoming request!"];
+      }
     }
     outOfChildSleepCount++;
   }

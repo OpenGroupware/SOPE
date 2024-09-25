@@ -499,9 +499,11 @@ static BOOL     debugOn                      = NO;
     // [self logWithFormat:@"child accepting message from socket: %@", controlSocket];
     while (![controlSocket safeReadBytes: &message
                                    count: sizeof (WOChildMessage)])
+    {
       [self errorWithFormat:
               @"failure reading watchdog message (retrying...): %@",
             [controlSocket lastException]];
+    }
     if (message == WOChildMessageAccept) {
       pool = [NSAutoreleasePool new];
       connection = [self _accept];
