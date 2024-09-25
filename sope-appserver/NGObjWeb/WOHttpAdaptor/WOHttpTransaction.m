@@ -622,8 +622,10 @@ static int logCounter = 0;
     if (![self _run])
       ok = NO;
   }
-  NS_HANDLER
+  NS_HANDLER {
+    assert(localException != nil);
     ok = [self _catchedException:localException];
+  }
   NS_ENDHANDLER;
   
   if (self->asyncResponseToken == nil) {
