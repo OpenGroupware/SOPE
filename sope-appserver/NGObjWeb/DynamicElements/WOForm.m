@@ -361,12 +361,22 @@ static int debugTakeValues = -1;
 
   WOResponse_AddCString(_response, "<form");
 
+  // hh(2024-09-25): In OGo "no action" means same-page action! We might want to
+  //                 update that to be more explicit, but we always need that
+  //                 for now.
+  // I think one should not use `WOForm` for non-WO stuff. Rather use a
+  // WOGenericElement w/ tag "form".
+  #if 0
+  // Francis Lachapelle, 10 yr ago - Remove requirement of a form action attribute
   /* add URL to response and return the query string */
   hasAction = self->href             != nil 
            || self->directActionName != nil
            || self->actionClass      != nil
            || self->action           != nil
            || self->pageName         != nil;
+  #else
+  hasAction = YES;
+  #endif
   if (hasAction) {
     WOResponse_AddCString(_response, " action=\"");
 
