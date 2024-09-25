@@ -41,7 +41,7 @@ static NSTimeZone *met = nil;
   didInit = YES;
   
   gmt = [[NSTimeZone timeZoneWithName:@"GMT"] retain];
-  met = [[NSTimeZone timeZoneWithName:@"MET"] retain];
+  met = [[NSTimeZone timeZoneWithName:@"CET"] retain];
 }
 
 /* 
