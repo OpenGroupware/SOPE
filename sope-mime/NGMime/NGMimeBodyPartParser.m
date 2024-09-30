@@ -25,6 +25,15 @@
 
 @implementation NGMimeBodyPartParser
 
++ (int)version {
+  return 3;
+}
++ (void)initialize {
+  NSAssert2([super version] == 3,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+}
+
 - (NGMimeType *)defaultContentTypeForPart:(id<NGMimePart>)_part {
   return [NGMimeType mimeType:@"text/plain"];
 }

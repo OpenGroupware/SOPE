@@ -77,6 +77,10 @@
 
 @implementation WOResourceManager
 
++ (int)version {
+  return 4;
+}
+
 static Class    UrlClass             = Nil;
 static NSString *resourcePrefix      = @"";
 static NSString *rapidTurnAroundPath = nil;
@@ -201,7 +205,7 @@ _pathExists(WOResourceManager *self, NSFileManager *fm, NSString *path)
 }
 - (NSString *)loggingPrefix {
   char buf[32];
-  sprintf(buf, "[wo-rm-0x%p]", self);
+  sprintf(buf, "[wo-rm-%p]", self);
   return [NSString stringWithCString:buf];
 }
 
@@ -766,7 +770,7 @@ _pathExists(WOResourceManager *self, NSFileManager *fm, NSString *path)
        problems. It is required for loading components from bundles.
     */
     if ((_framework = rapidTurnAroundPath) == nil) {
-      if ((clazz = NSClassFromString(_nameOrURL)))
+      if ((clazz = NGClassFromString(_nameOrURL)))
 	_framework = [[NSBundle bundleForClass:clazz] bundlePath];
     }
   }

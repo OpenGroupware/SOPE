@@ -35,6 +35,10 @@
 
 @implementation WODirectAction
 
++ (int)version {
+  return 4;
+}
+
 - (id)initWithRequest:(WORequest *)_request {
   if ((self = [super init]) != nil) {
   }

@@ -311,7 +311,7 @@ static BOOL debugOn = NO;
   Class clazz;
   id    newObject;
   
-  clazz = NSClassFromString([[self entity] managedObjectClassName]);
+  clazz = NGClassFromString([[self entity] managedObjectClassName]);
   
   newObject = [[clazz alloc] initWithEntity:[self entity]
 			     insertIntoManagedObjectContext:

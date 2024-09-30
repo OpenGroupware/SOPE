@@ -68,6 +68,10 @@ static NSString *defaultCompRqHandlerClassName = @"OWViewRequestHandler";
 static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
 #endif
 
++ (int)version {
+  return [super version] + 5 /* v6 */;
+}
+
 /* old license checks */
 
 - (NSCalendarDate *)appExpireDate {
@@ -226,7 +230,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
     /* setup request handlers */
     
     self->defaultRequestHandler =
-      [[NSClassFromString([[self class] defaultRequestHandlerClassName])
+      [[NGClassFromString([[self class] defaultRequestHandlerClassName])
 			 alloc] init];
     
     self->requestHandlerRegistry =
@@ -238,7 +242,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
 	      @"this probably means that share/ngobjweb/Defaults.plist "
 	      @"could not get loaded (permissions?)"];
     }
-    rh = [[NSClassFromString(defaultCompRqHandlerClassName) alloc] init];
+    rh = [[NGClassFromString(defaultCompRqHandlerClassName) alloc] init];
     if ([rk isNotEmpty] && [rh isNotNull])
       [self registerRequestHandler:rh forKey:rk];
     [rh release]; rh = nil;
@@ -263,7 +267,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
     /* setup session store */
     
     self->iSessionStore =
-      [[NSClassFromString([self sessionStoreClassName]) alloc] init];
+      [[NGClassFromString([self sessionStoreClassName]) alloc] init];
     
     /* setup statistics store */
     
@@ -530,7 +534,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
   else {
     Class snClass = Nil;
     
-    if ((snClass = NSClassFromString(@"Session")) == Nil)
+    if ((snClass = NGClassFromString(@"Session")) == Nil)
       snClass = [WOSession class];
     
     return [[snClass alloc] init];
@@ -787,7 +791,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
   ud = [NSUserDefaults standardUserDefaults];
   p  = [ud stringForKey:@"WODefaultResourceManager"];
   rmClass = [p isNotEmpty]
-    ? NSClassFromString(p)
+    ? NGClassFromString(p)
     : [WOResourceManager class];
   
   if (rmClass == Nil) {
@@ -934,7 +938,7 @@ nbuckets, nindices, narrays, idxsize);
   languages:(NSArray *)_languages
 {
   WOElement *element            = nil;
-  Class     dynamicElementClass = NSClassFromString(_name);
+  Class     dynamicElementClass = NGClassFromString(_name);
 
   if (dynamicElementClass == Nil) {
     [self warnWithFormat:@"did not find dynamic element class %@ !", _name];

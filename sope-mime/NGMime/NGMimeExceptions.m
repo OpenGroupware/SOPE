@@ -24,6 +24,10 @@
 
 @implementation NGMimeException
 
++ (int)version {
+  return 2;
+}
+
 - (id)init {
   return [self initWithReason:@"a MIME exception occured"];
 }
@@ -31,6 +35,15 @@
 @end /* NGMimeException */
 
 @implementation NGMimeParserException
+
++ (int)version {
+  return 2;
+}
++ (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+}
 
 - (id)init {
   return [self initWithReason:@"a MIME exception occured during parsing"];

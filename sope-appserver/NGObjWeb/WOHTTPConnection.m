@@ -67,6 +67,10 @@ static NSArray  *noProxy     = nil;
 static BOOL doDebug   = NO;
 static BOOL logStream = NO;
 
++ (int)version {
+  return 3;
+}
+
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   static BOOL didInit = NO;
@@ -169,11 +173,11 @@ static BOOL logStream = NO;
 - (NSString *)loggingPrefix {
   /* improve perf ... */
   if (self->url) {
-    return [NSString stringWithFormat:@"WOHTTP[0x%p]<%@>",
+    return [NSString stringWithFormat:@"WOHTTP[%p]<%@>",
 		       self, [self->url absoluteString]];
   }
   else
-    return [NSString stringWithFormat:@"WOHTTP[0x%p]", self];
+    return [NSString stringWithFormat:@"WOHTTP[%p]", self];
 }
 
 /* accessors */

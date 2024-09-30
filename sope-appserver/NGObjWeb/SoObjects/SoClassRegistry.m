@@ -56,7 +56,7 @@ static SoClassRegistry *registry = nil; // THREAD
   
   if ([_name length] == 0) return nil;
   
-  if ((clazz = NSClassFromString(_name)))
+  if ((clazz = NGClassFromString(_name)))
     return [self soClassForClass:clazz];
   
   return nil;

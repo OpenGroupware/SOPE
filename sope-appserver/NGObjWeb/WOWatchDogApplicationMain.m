@@ -1,6 +1,7 @@
 /*
   Copyright (C) 2000-2005 SKYRIX Software AG
   Copyright (C) 2009 Inverse inc.
+  Copyright (C) 2024 Helge Heß
 
   This file is part of SOPE.
 
@@ -35,6 +36,7 @@
 #import <NGObjWeb/WOAdaptor.h>
 #import <NGObjWeb/WOApplication.h>
 #import <NGExtensions/NSObject+Logs.h>
+#import <NGExtensions/NGBundleManager.h>
 #import <NGStreams/NGActiveSocket.h>
 #import <NGStreams/NGCTextStream.h>
 #import <NGStreams/NGInternetSocketAddress.h>
@@ -518,7 +520,7 @@ typedef enum {
                                    count: argc
                              environment: environ];
   NGInitTextStdio();
-  app = [NSClassFromString(appName) new];
+  app = [NGClassFromString(appName) new];
   [app autorelease];
   [app setListeningSocket: listeningSocket];
   [app setControlSocket: controlSocket];
@@ -545,8 +547,11 @@ typedef enum {
   else {
     /* we're out of ready children, sleep a bit to avoid hogging the CPU */
     usleep(OUT_OF_CHILD_SLEEPTIME);
-    if (outOfChildSleepCount % OUT_OF_CHILD_LOG_INTERVAL == 0) {
-      [self errorWithFormat: @"No child available to handle incoming request!"];
+    // hh(2024-09-25): makes no sense for single child setups.
+    if (numberOfChildren > 1) {
+      if (outOfChildSleepCount % OUT_OF_CHILD_LOG_INTERVAL == 0) {
+        [self errorWithFormat: @"No child available to handle incoming request!"];
+      }
     }
     outOfChildSleepCount++;
   }
@@ -1008,7 +1013,7 @@ int WOWatchDogApplicationMain
   /* This invocation forces the class initialization of WOCoreApplication,
      which causes the NSUserDefaults to be initialized as well with
      Defaults.plist. */
-  WOAppClass = [NSClassFromString (appName) class];
+  WOAppClass = [NGClassFromString (appName) class];
 
   ud = [NSUserDefaults standardUserDefaults];
   processInfo = [NSProcessInfo processInfo];

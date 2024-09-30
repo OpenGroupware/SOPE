@@ -27,6 +27,10 @@
 
 @implementation NGMimeBodyPart
 
++ (int)version {
+  return 2;
+}
+
 + (id)bodyPartWithHeader:(NGHashMap *)_header {
   return [[[self alloc] initWithHeader:_header] autorelease];
 }

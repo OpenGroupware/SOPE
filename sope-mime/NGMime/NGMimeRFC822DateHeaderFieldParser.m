@@ -31,13 +31,17 @@
 static NSTimeZone *gmt = nil;
 static NSTimeZone *met = nil;
 
++ (int)version {
+  return 2;
+}
+
 + (void)initialize {
   static BOOL didInit = NO;
   if (didInit) return;
   didInit = YES;
   
   gmt = [[NSTimeZone timeZoneWithName:@"GMT"] retain];
-  met = [[NSTimeZone timeZoneWithName:@"MET"] retain];
+  met = [[NSTimeZone timeZoneWithName:@"CET"] retain];
 }
 
 /* 

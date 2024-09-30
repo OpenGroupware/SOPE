@@ -39,7 +39,7 @@ typedef struct {
 } *my_objc_object;
 
 #if (defined(__GNU_LIBOBJC__) && (__GNU_LIBOBJC__ >= 20100911)) || defined(APPLE_RUNTIME) || defined(__GNUSTEP_RUNTIME__)
-#  warning TODO: implement for NeXT/Apple runtime!
+#  warning TODO: implement for NeXT/Apple/Modern-GNUstep runtime!
 #  define object_is_instance(object) (object!=nil?YES:NO)
 #  define class_get_super_class class_getSuperclass
 #  define class_get_class_method class_getClassMethod

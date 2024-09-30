@@ -76,7 +76,7 @@
 	
         className = [OWGetProperty(_config, @"formatterClass") autorelease];
         className = [className valueInComponent:nil];
-        className = NSClassFromString(className);
+        className = NGClassFromString(className);
         className = [[className alloc] init];
 
         self->formatter = 

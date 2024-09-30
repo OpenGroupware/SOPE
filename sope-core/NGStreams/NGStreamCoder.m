@@ -763,7 +763,7 @@ FINAL void _readObjC(NGStreamCoder *self, void *_value, const char *_type);
       }
     }
     
-    result = NSClassFromString(name);
+    result = NGClassFromString(name);
 #if 0
     NSLog(@"decoded class %@:%i (result=%@).", name, version, result);
 #endif

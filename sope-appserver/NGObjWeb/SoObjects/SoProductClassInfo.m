@@ -95,7 +95,7 @@ static int loadDebugOn = 0;
   return self->className;
 }
 - (Class)objcClass {
-  return NSClassFromString([self className]);
+  return NGClassFromString([self className]);
 }
 
 /* apply */
@@ -540,7 +540,7 @@ static int loadDebugOn = 0;
     [[self->product bundle] load];
     
     // TODO: should we allow/use SoClasses here?
-    if ((valueClass = NSClassFromString(valueClassName)) == Nil) {
+    if ((valueClass = NGClassFromString(valueClassName)) == Nil) {
       [self errorWithFormat:
               @"did not find value class '%@' for slot: '%@'",
               valueClassName, _name];

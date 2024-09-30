@@ -24,6 +24,10 @@
 
 @implementation NGTextStream
 
++ (int)version {
+  return 2;
+}
+
 - (void)dealloc {
   [self->lastException release];
   [super dealloc];

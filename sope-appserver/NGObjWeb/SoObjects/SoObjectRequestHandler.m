@@ -59,13 +59,20 @@ static NSString *rapidTurnAroundPath = nil;
 
 static NSString *redirectURISafetySuffix = nil;
 
++ (int)version {
+  return [super version] + 0 /* 2 */;
+}
 + (void)initialize {
   static BOOL     didInit = NO;
   NSUserDefaults  *ud;
   NGLoggerManager *lm;
 
   if (didInit) return;
+
   didInit = YES;
+  NSAssert2([super version] == 2,
+	    @"invalid superclass (%@) version %i !",
+	    NSStringFromClass([self superclass]), [super version]);
 
   lm          = [NGLoggerManager defaultLoggerManager];
   logger      = [lm loggerForClass:self];
@@ -389,7 +396,7 @@ static NSString *redirectURISafetySuffix = nil;
   /* create dispatcher */
   
   if (rqType != nil) [_ctx setSoRequestType:rqType];
-  if ((dispatcher = NSClassFromString(dpClass)) == nil) {
+  if ((dispatcher = NGClassFromString(dpClass)) == nil) {
     [self errorWithFormat:@"did not find dispatcher class '%@'", dpClass];
     return nil;
   }
@@ -441,7 +448,7 @@ static NSString *redirectURISafetySuffix = nil;
     if (rendererClass) {
       Class clazz;
       
-      if ((clazz = NSClassFromString(rendererClass)) == Nil) {
+      if ((clazz = NGClassFromString(rendererClass)) == Nil) {
         [self errorWithFormat:@"did not find class of selected renderer %@", 
                 rendererClass];
       }

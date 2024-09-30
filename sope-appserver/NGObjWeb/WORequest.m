@@ -55,6 +55,10 @@ NGObjWeb_DECLARE NSString *WONoSelectionString       = @"WONoSelectionString";
 
 static BOOL debugOn = NO;
 
++ (int)version {
+  return [super version] + 2 /* v7 */;
+}
+
 + (void)initialize {
   static BOOL isInitialized = NO;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
@@ -63,7 +67,11 @@ static BOOL debugOn = NO;
 
   if (isInitialized) return;
   isInitialized = YES;
-
+    
+  NSAssert2([super version] == 5,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
   debugOn = [WOApplication isDebuggingEnabled];
 
   /* apply defaults on some globals ... */
@@ -757,7 +765,7 @@ static BOOL debugOn = NO;
   return debugOn;
 }
 - (NSString *)loggingPrefix {
-  return [NSString stringWithFormat:@"|Rq:%@ 0x%p|",
+  return [NSString stringWithFormat:@"|Rq:%@ %p|",
                      [self method], self];
 }
 

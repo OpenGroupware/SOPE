@@ -83,7 +83,7 @@ static int debugOn = -1;
   e = [SoAccessDeniedException securityExceptionOnObject:_obj
 			       withAuthenticator:nil
 			       andManager:self
-			       reason:_r];
+			       reason:r];
   return e;
 }
 

@@ -71,6 +71,10 @@
 
 @implementation WEDropContainer
 
++ (int)version {
+  return 0 + [super version];
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_subs

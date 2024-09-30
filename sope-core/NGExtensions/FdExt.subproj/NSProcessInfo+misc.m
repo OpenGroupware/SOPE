@@ -203,7 +203,7 @@ static NSNumber *_uint(unsigned int i) {
 - (unsigned long long)virtualMemorySize {
 #ifdef __linux__
   NG_GET_PROC_INFO;
-  return vsize;
+  return (res > 0) ? vsize : 0;
 #else
   return 0;
 #endif
@@ -211,7 +211,7 @@ static NSNumber *_uint(unsigned int i) {
 - (unsigned long long)residentSetSize {
 #ifdef __linux__
   NG_GET_PROC_INFO;
-  return rss;
+  return (res > 0) ? rss : 0;
 #else
   return 0;
 #endif
@@ -219,7 +219,7 @@ static NSNumber *_uint(unsigned int i) {
 - (unsigned int)residentSetSizeLimit {
 #ifdef __linux__
   NG_GET_PROC_INFO;
-  return rlim;
+  return (res > 0) ? rlim : 0;
 #else
   return 0;
 #endif

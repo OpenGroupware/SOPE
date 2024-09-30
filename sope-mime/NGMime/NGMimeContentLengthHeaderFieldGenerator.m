@@ -25,6 +25,10 @@
 
 @implementation NGMimeContentLengthHeaderFieldGenerator
 
++ (int)version {
+  return 2;
+}
+
 - (NSData *)generateDataForHeaderFieldNamed:(NSString *)_headerField
   value:(id)_value
 {

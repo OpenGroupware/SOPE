@@ -28,6 +28,10 @@
 
 @implementation NGMimeHeaderFieldParserSet
 
++ (int)version {
+  return 2;
+}
+
 static NGMimeHeaderFieldParserSet *rfc822set = nil;
 
 + (id)headerFieldParserSet {

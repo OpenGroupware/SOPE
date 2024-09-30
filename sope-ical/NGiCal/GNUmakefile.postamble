@@ -1,0 +1,23 @@
+# compilation settings
+
+#after-install ::
+#	cp NGiCal.xmap $(SOPE_SAXMAPPINGS)/
+
+# install library resources
+
+ifneq ($(frameworks),yes)
+
+$(RESOURCES_DIR) :
+	$(MKDIRS) $(RESOURCES_DIR)
+
+ngical-resources : $(RESOURCES_DIR) $(libNGiCal_RESOURCES)
+	@(if [ "$(libNGiCal_RESOURCES)" != "" ]; then \
+	  echo "Copying resources into install path ..."; \
+          for ff in $(libNGiCal_RESOURCES); do \
+	    cp $$ff $(RESOURCES_DIR)/$$ff; \
+          done; \
+	fi)
+
+after-install :: ngical-resources
+
+endif

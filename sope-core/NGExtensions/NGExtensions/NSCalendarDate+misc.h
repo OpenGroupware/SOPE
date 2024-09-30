@@ -85,7 +85,7 @@
 
     d1 = [NSCalendarDate dateWithYear:2000 month:2 day:15
                          hour:12 minute:0 second:0
-                         timeZone:@"MET"];
+                         timeZone:@"CET"];
     d2 = [d1 dateByAddingYear:0 month:3 day:0];
 
     [d2 hourOfDay] will be '15' though the timezone changed from

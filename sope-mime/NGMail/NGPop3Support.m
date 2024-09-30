@@ -25,6 +25,10 @@
 
 @implementation NGPop3Response
 
++ (int)version {
+  return 2;
+}
+
 - (id)initWithLine:(NSString *)_line {
   if ((self = [super init])) {
     self->line = [_line copy];
@@ -62,6 +66,10 @@
 @end /* NGPop3Response */
 
 @implementation NGPop3MessageInfo
+
++ (int)version {
+  return 2;
+}
 
 - (id)initWithNumber:(int)_num size:(int)_size client:(NGPop3Client *)_client{
   if ((self = [super init])) {
@@ -106,6 +114,10 @@
 
 @implementation NGPop3MailDropEnumerator
 
++ (int)version {
+  return 2;
+}
+
 - (id)initWithMessageInfoEnumerator:(NSEnumerator *)_infos {
   self->msgInfos = [_infos retain];
   return self;
@@ -136,9 +148,17 @@
 
 @implementation NGPop3Exception
 
++ (int)version {
+  return 2;
+}
+
 @end /* NGPop3Exception */
 
 @implementation NGPop3StateException
+
++ (int)version {
+  return 2;
+}
 
 - (id)init {
   return [self initWithClient:nil requiredState:0];

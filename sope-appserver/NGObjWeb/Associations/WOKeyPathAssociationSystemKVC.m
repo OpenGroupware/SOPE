@@ -48,6 +48,9 @@
 static NSNumber *yesNum = nil;
 static NSNumber *noNum  = nil;
 
++ (int)version {
+  return [super version] + 0; /* v2 */
+}
 + (void)initialize {
   if (yesNum == nil) yesNum = [[NSNumber numberWithBool:YES] retain];
   if (noNum  == nil) noNum  = [[NSNumber numberWithBool:NO]  retain];

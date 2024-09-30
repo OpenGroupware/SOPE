@@ -76,6 +76,10 @@ static Class    NSDateClass      = Nil;
 static NGLogger *logger          = nil;
 static NGLogger *perfLogger      = nil;
 
++ (int)version {
+  return 1;
+}
+
 NGObjWeb_DECLARE id WOApp = nil;
 static NSMutableArray *activeApps = nil; // THREAD
 
@@ -305,7 +309,7 @@ static NSMutableArray *activeApps = nil; // THREAD
   Class     adaptorClass = Nil;
   WOAdaptor *adaptor     = nil;
 
-  adaptorClass = NSClassFromString(_name);
+  adaptorClass = NGClassFromString(_name);
   if (adaptorClass == Nil) {
     [self errorWithFormat:@"did not find adaptor class %@", _name];
     return nil;

@@ -33,6 +33,10 @@
 
 @implementation WOSessionStore
 
++ (int)version {
+  return 2;
+}
+
 + (WOSessionStore *)serverSessionStore {
   return
     [[[NSClassFromString(@"WOServerSessionStore") alloc] init] autorelease];

@@ -42,6 +42,10 @@ NGStreams_DECLARE id<NGExtendedTextOutputStream> NGTextErr = nil;
 
 @implementation NGCTextStream
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
+
 // stdio
 
 NGStreams_DECLARE void NGInitTextStdio(void) {
@@ -77,6 +81,9 @@ static void _flushAtExit(void) {
 + (void)initialize {
   BOOL isInitialized = NO;
   if (!isInitialized) {
+    NSAssert2([super version] == 2,
+              @"invalid superclass (%@) version %i !",
+              NSStringFromClass([self superclass]), [super version]);
     isInitialized = YES;
 
     atexit(_flushAtExit);

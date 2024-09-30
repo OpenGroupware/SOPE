@@ -95,8 +95,63 @@ static int _getClassHook(const char *className) {
   
   return 1;
 }
+#endif // NEXT/APPLE RUNTIME
 
+#if GNU_RUNTIME
+#include <objc/runtime.h>
+
+static Class (*oldClassLoadHook)(const char *_name) = NULL;
+
+static inline BOOL _isValidClassName(const char *_name) {
+  register int len;
+
+  if (_name == NULL) return NO;
+
+  for (len = 0; (len < 256) && (*_name != '\0'); len++, _name++) {
+    if (*_name != '_') {
+      if (!isalnum((int)*_name))
+        return NO;
+    }
+  }
+  return (len == 256) ? NO : YES;
+}
+
+static Class _classLoadHook(const char *_name) {
+  static BOOL debugOn = NO;
+  if (_isValidClassName(_name)) {
+    static NGBundleManager *manager = nil;
+    NSBundle *bundle;
+
+    if (debugOn) 
+      NSLog(@"%s: look for class %s", __PRETTY_FUNCTION__, _name);
+    if (manager == nil)
+      manager = [NGBundleManager defaultBundleManager];
+    
+    bundle  = [manager bundleForClassNamed:[NSString stringWithCString:_name]];
+    if (bundle != nil) {
+      if (debugOn)
+        NSLog(@"%s: found bundle %@", __PRETTY_FUNCTION__, [bundle bundlePath]);
+      
+      if ([manager loadBundle:bundle]) {
+        Class clazz;
+#if 1 // hh(2024-09-23): new GNU runtime
+        // lookUpClass does not invoke the handler,
+        // getClass does.
+        clazz = objc_lookUpClass(_name);
+#else
+        void *hook = _objc_lookup_class;
+        _objc_lookup_class = NULL;
+        clazz = objc_lookup_class(_name);
+        _objc_lookup_class = hook;
 #endif
+
+        if (clazz) return clazz;
+      }
+    }
+  }
+  return (oldClassLoadHook != NULL) ? oldClassLoadHook(_name) : Nil;
+}
+#endif // GNU_RUNTIME
 
 NSString *NGBundleWasLoadedNotificationName = @"NGBundleWasLoadedNotification";
 
@@ -180,6 +235,25 @@ static NSString *NGEnvVarPathSeparator = @":";
   if (defaultManager == nil) {
     defaultManager = [[NGBundleManager alloc] init];
   }
+#if NeXT_RUNTIME || APPLE_RUNTIME
+  {
+    static BOOL didRegisterCallback = NO;
+        
+    if (!didRegisterCallback) {
+      didRegisterCallback = YES;
+      objc_setClassHandler(_getClassHook);
+    }
+  }
+  #elif GNU_RUNTIME
+    static objc_get_unknown_class_handler _objc_lookup_class = NULL;
+    if (_objc_lookup_class != _classLoadHook) {
+      oldClassLoadHook = _objc_lookup_class;
+      _objc_lookup_class = _classLoadHook;
+      #if 1 // hh(2024-09-23): new GNU runtime
+      objc_setGetUnknownClassHandler(_objc_lookup_class);
+      #endif 
+    }
+  #endif
 
   return defaultManager;
 }
@@ -409,7 +483,7 @@ static NSString *NGEnvVarPathSeparator = @":";
     hookDoLookup = NO;
 #endif
 
-    NSMapInsert(self->classToBundle, NSClassFromString(v), _bundle);
+    NSMapInsert(self->classToBundle, NGClassFromString(v), _bundle);
     NSMapInsert(self->classNameToBundle, v, _bundle);
     
 #if NeXT_RUNTIME || APPLE_RUNTIME
@@ -650,7 +724,7 @@ static NSString *NGEnvVarPathSeparator = @":";
     [self debugWithFormat:@"lookup bundle handler %@ of bundle: %@",
 	    handler, _bundle];
     
-    if ((handler = NSClassFromString(handler)) == nil) {
+    if ((handler = NGClassFromString(handler)) == nil) {
       NSLog(@"ERROR: did not find handler class %@ of bundle %@.",
             [_bundleInfo objectForKey:@"bundleHandler"], [_bundle bundlePath]);
       handler = [_bundle principalClass];
@@ -709,6 +783,8 @@ static NSString *NGEnvVarPathSeparator = @":";
   if ((info = [(NSDictionary *)info objectForKey:@"bundleManagerVersion"])) {
     if ([info intValue] > [[self class] version]) {
       /* bundle manager version does not match ... */
+      NSLog(@"Bundle manager version does not match '%@' !", _path);
+      assert("Bundle Manager version...");
       return nil;
     }
   }
@@ -886,7 +962,7 @@ static NSString *NGEnvVarPathSeparator = @":";
       if ((className = [i objectForKey:@"name"]) == nil)
         continue;
 
-      if ((clazz = NSClassFromString(className)) == Nil)
+      if ((clazz = NGClassFromString(className)) == Nil)
         continue;
       
       if ([i objectForKey:@"exact-version"]) {
@@ -1981,7 +2057,7 @@ static BOOL debugLanguageLookup = NO;
   if ((cname = [[self infoDictionary] objectForKey:@"NSPrincipalClass"]) ==nil)
     return Nil;
   
-  if ((c = NSClassFromString(cname)) != Nil)
+  if ((c = NGClassFromString(cname)) != Nil)
     return c;
   
   NSLog(@"%s: did not find principal class named '%@' of bundle %@, dict: %@",
@@ -2007,3 +2083,13 @@ static BOOL debugLanguageLookup = NO;
 #endif
 
 @end /* NGBundle */
+
+Class NGClassFromString(NSString *aClassName) {
+  if (aClassName == nil) return Nil;
+
+  int  len = [aClassName length];
+  char buf[len + 1];
+  
+  [aClassName getCString:buf maxLength:len + 1 encoding: NSASCIIStringEncoding];
+  return objc_getClass(buf);
+}

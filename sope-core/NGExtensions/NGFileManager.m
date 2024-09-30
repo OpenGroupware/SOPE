@@ -28,6 +28,10 @@
 
 static BOOL logPathOps = NO;
 
++ (int)version {
+  return 0;
+}
+
 - (id)init {
   if ((self = [super init])) {
     self->cwd = @"/";

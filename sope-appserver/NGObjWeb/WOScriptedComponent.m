@@ -248,7 +248,7 @@ static BOOL logScriptDealloc = NO;
 /* logging */
 
 - (NSString *)loggingPrefix {
-  return [NSString stringWithFormat:@"script<%@>[0x%p]", [self name], self];
+  return [NSString stringWithFormat:@"script<%@>[%p]", [self name], self];
 }
 
 @end /* WOScriptedComponent */

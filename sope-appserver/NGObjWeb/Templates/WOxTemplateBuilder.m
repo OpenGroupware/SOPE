@@ -32,7 +32,15 @@
 static BOOL  profLoading = NO;
 static Class DateClass = Nil;
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
+
 + (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
   if (DateClass == Nil)
     DateClass = [NSDate class];
 }

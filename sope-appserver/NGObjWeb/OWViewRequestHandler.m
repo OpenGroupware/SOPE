@@ -42,7 +42,14 @@ static BOOL perflog = NO;
 
 @implementation OWViewRequestHandler
 
++ (int)version {
+  return [super version] + 0 /* 2 */;
+}
 + (void)initialize {
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
   perflog = [[NSUserDefaults standardUserDefaults]
                              boolForKey:@"OWViewRequestHandlerProfile"];
 }

@@ -110,6 +110,10 @@
 
 @implementation NGSmtpClient
 
++ (int)version {
+  return 2;
+}
+
 - (BOOL)useSSL {
   return self->useSSL;
 }

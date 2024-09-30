@@ -31,6 +31,10 @@
 
 static int debugTakeValues = -1;
 
++ (int)version {
+  return 5;
+}
+
 - (id)initWithName:(NSString *)_name
   associations:(NSDictionary *)_config
   template:(WOElement *)_c
@@ -341,6 +345,7 @@ static int debugTakeValues = -1;
 - (void)appendToResponse:(WOResponse *)_response inContext:(WOContext *)_ctx {
   WOComponent *sComponent;
   NSString    *queryString = nil;
+  BOOL        hasAction;
   
   if ([_ctx isRenderingDisabled] || [[_ctx request] isFromClientComponent]) {
     [self->template appendToResponse:_response inContext:_ctx];
@@ -356,34 +361,48 @@ static int debugTakeValues = -1;
 
   WOResponse_AddCString(_response, "<form");
 
+  // hh(2024-09-25): In OGo "no action" means same-page action! We might want to
+  //                 update that to be more explicit, but we always need that
+  //                 for now.
+  // I think one should not use `WOForm` for non-WO stuff. Rather use a
+  // WOGenericElement w/ tag "form".
+  #if 0
+  // Francis Lachapelle, 10 yr ago - Remove requirement of a form action attribute
   /* add URL to response and return the query string */
-  if (self->href != nil || self->directActionName != nil || self->actionClass != nil)
-    {
-      WOResponse_AddCString(_response, " action=\"");
+  hasAction = self->href             != nil 
+           || self->directActionName != nil
+           || self->actionClass      != nil
+           || self->action           != nil
+           || self->pageName         != nil;
+  #else
+  hasAction = YES;
+  #endif
+  if (hasAction) {
+    WOResponse_AddCString(_response, " action=\"");
 
-      if (self->href != nil)
-        queryString = [self _addHrefToResponse:_response inContext:_ctx];
-      else if (self->directActionName != nil || self->actionClass != nil)
-        [self _addDirectActionToResponse:_response inContext:_ctx];
-      else
-        queryString = [self _addActionToResponse:_response inContext:_ctx];
+    if (self->href != nil)
+      queryString = [self _addHrefToResponse:_response inContext:_ctx];
+    else if (self->directActionName != nil || self->actionClass != nil)
+      [self _addDirectActionToResponse:_response inContext:_ctx];
+    else
+      queryString = [self _addActionToResponse:_response inContext:_ctx];
 
-      if (self->fragmentIdentifier != nil) {
-        NSString *f = [self->fragmentIdentifier stringValueInComponent:sComponent];
-        if ([f isNotEmpty]) {
-          [_response appendContentCharacter:'#'];
-          WOResponse_AddString(_response, f);
-        }
+    if (self->fragmentIdentifier != nil) {
+      NSString *f = [self->fragmentIdentifier stringValueInComponent:sComponent];
+      if ([f isNotEmpty]) {
+        [_response appendContentCharacter:'#'];
+        WOResponse_AddString(_response, f);
       }
-
-      /* append the query string */
-      if (queryString != nil) {
-        [_response appendContentCharacter:'?'];
-        WOResponse_AddString(_response, queryString);
-      }
-
-      WOResponse_AddCString(_response, "\"");
     }
+
+    /* append the query string */
+    if (queryString != nil) {
+      [_response appendContentCharacter:'?'];
+      WOResponse_AddString(_response, queryString);
+    }
+
+    WOResponse_AddCString(_response, "\"");
+  }
 
   if (self->method != nil) {
     WOResponse_AddCString(_response, " method=\"");

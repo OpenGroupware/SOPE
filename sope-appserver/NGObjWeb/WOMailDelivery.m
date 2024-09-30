@@ -26,6 +26,10 @@
 
 @implementation WOMailDelivery
 
++ (int)version {
+  return 2;
+}
+
 WOMailDelivery *sharedInstance = nil;
 
 + (id)sharedInstance {

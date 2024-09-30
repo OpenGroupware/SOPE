@@ -46,14 +46,14 @@
   BOOL  lookupInAction = NO;
   
   /* check whether name is a direct-action class */
-  if ((clazz = NSClassFromString(_name))) {
+  if ((clazz = NGClassFromString(_name))) {
     if (![self allowDirectActionClass:clazz])
       clazz = Nil;
   }
   else {
     /* automatically use DirectAction class */
     lookupInAction = YES;
-    clazz = NSClassFromString(@"DirectAction");
+    clazz = NGClassFromString(@"DirectAction");
   }
   
   /* found a class, construct direct action */

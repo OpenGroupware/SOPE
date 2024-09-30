@@ -463,7 +463,7 @@ static Class NSArrayClass = Nil;
 static NGMimeHeaderFieldParserSet *httpSet = nil;
 
 static inline void NGRegisterParser(NSString *_field, NSString *_parserClass) {
-  id parser = [[NSClassFromString(_parserClass) alloc] init];
+  id parser = [[NGClassFromString(_parserClass) alloc] init];
   
   if (parser) {
     [httpSet setParser:parser forField:_field];

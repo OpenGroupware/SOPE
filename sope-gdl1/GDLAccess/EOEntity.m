@@ -38,7 +38,7 @@
 #import <EOControl/EOKeyValueCoding.h>
 #import <EOControl/EOKeyGlobalID.h>
 
-static int _compareByName(id obj1, id obj2, void * context);
+static NSComparisonResult _compareByName(id obj1, id obj2, void * context);
 
 @interface NSObject(MappedArrayProtocol)
 - (NSArray *)mappedArrayUsingSelector:(SEL)_selector;
@@ -900,7 +900,7 @@ static inline BOOL _containsObject(NSArray *a, id obj) {
   return [dict count] > 0 ? dict : (NSMutableDictionary *)nil;
 }
 
-static int _compareByName(id obj1, id obj2, void * context) {
+static NSComparisonResult _compareByName(id obj1, id obj2, void * context) {
   return [[(EOAttribute*)obj1 name] compare:[(EOAttribute*)obj2 name]];
 }
 

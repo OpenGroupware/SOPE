@@ -42,6 +42,10 @@
 
 static Class WOKeyPathAssociationClass = Nil;
 
++ (int)version {
+  return 2;
+}
+
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   NSString *s;
@@ -54,7 +58,7 @@ static Class WOKeyPathAssociationClass = Nil;
 #if DEBUG
     NSLog(@"Note: using different class for keypath associations: %@", s);
 #endif
-    WOKeyPathAssociationClass = NSClassFromString(s);
+    WOKeyPathAssociationClass = NGClassFromString(s);
   }
   if (WOKeyPathAssociationClass == Nil)
     WOKeyPathAssociationClass = [WOKeyPathAssociation class];

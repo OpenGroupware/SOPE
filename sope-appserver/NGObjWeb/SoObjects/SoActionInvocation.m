@@ -157,7 +157,7 @@ static int debugOn = 0;
   
   /* find class */
   
-  if ((clazz = NSClassFromString([self actionClassName])) == Nil) {
+  if ((clazz = NGClassFromString([self actionClassName])) == Nil) {
     [self errorWithFormat:@"did not find action class: %@",
             [self actionClassName]];
     return  nil;

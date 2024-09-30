@@ -1,5 +1,7 @@
 {
   requires = {
+    bundleManagerVersion = 1;
+    
     classes = (
       { name = NSObject; }
     );

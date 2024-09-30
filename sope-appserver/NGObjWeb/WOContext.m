@@ -49,6 +49,10 @@ static Class WOAppClass = Nil;
 
 @implementation WOContext
 
++ (int)version {
+  return 9;
+}
+
 static Class    WOContextClass       = Nil;
 static Class    MutableStrClass      = Nil;
 static int      contextCount         = 0;
@@ -80,7 +84,7 @@ static NSURL    *redirectURL         = nil;
     MutableStrClass = [NSMutableString class];
   
   cn             = [ud stringForKey:@"WOContextClass"];
-  WOContextClass = NSClassFromString(cn);
+  WOContextClass = NGClassFromString(cn);
   NSAssert1(WOContextClass != Nil,
             @"Couldn't instantiate WOContextClass (%@)!", cn);
 

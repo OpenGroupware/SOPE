@@ -32,8 +32,15 @@
 
 static BOOL doDebug = NO;
 
++ (int)version {
+  return [super version] + 0 /* v2 */;
+}
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
+  
   doDebug = [ud boolForKey:@"WOResourceURLAssociationDebugEnabled"];
 }
 
@@ -158,7 +165,7 @@ static BOOL doDebug = NO;
   return doDebug;
 }
 - (NSString *)loggingPrefix {
-  return [NSString stringWithFormat:@"[rsrc:url assoc:0x%p]", self];
+  return [NSString stringWithFormat:@"[rsrc:url assoc:%p]", self];
 }
 
 /* description */
@@ -167,7 +174,7 @@ static BOOL doDebug = NO;
   NSMutableString *str;
 
   str = [NSMutableString stringWithCapacity:64];
-  [str appendFormat:@"<%@[0x%p]:", NSStringFromClass([self class]), self];
+  [str appendFormat:@"<%@[%p]:", NSStringFromClass([self class]), self];
   [str appendFormat:@" rsrc='%@'", [self resourceName]];
   [str appendString:@">"];
   return str;

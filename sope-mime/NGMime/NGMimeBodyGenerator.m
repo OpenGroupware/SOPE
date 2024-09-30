@@ -30,6 +30,9 @@
 
 static BOOL debugOn = NO;
 
++ (int)version {
+  return 2;
+}
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   

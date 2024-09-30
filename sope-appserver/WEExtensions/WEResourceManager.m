@@ -162,11 +162,18 @@ static NSString *themesDirName = @"Themes";
   return ma;
 }
 
++ (int)version {
+  return [super version] + 0 /* v4 */;
+}
 + (void)initialize {
   static BOOL isInitialized = NO;
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
   if (isInitialized) return;
   isInitialized = YES;
+    
+  NSAssert2([super version] == 4,
+	    @"invalid superclass (%@) version %i !",
+	    NSStringFromClass([self superclass]), [super version]);
 
   null = [[NSNull null] retain];
 

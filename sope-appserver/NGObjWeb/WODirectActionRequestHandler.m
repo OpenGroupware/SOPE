@@ -43,8 +43,15 @@ static Class NSDateClass = Nil;
 
 @implementation WODirectActionRequestHandler
 
++ (int)version {
+  return [super version] + 0 /* 2 */;
+}
 + (void)initialize {
   NSUserDefaults *ud = [NSUserDefaults standardUserDefaults];
+  
+  NSAssert2([super version] == 2,
+            @"invalid superclass (%@) version %i !",
+            NSStringFromClass([self superclass]), [super version]);
 
   NSDateClass = [NSDate class];
   perflog = [ud boolForKey:@"WOProfileDirectActionRequestHandler"];
@@ -174,7 +181,7 @@ static Class NSDateClass = Nil;
   if ([actionName length] == 0)
     actionName = @"default";
 
-  if ((*(&actionClass) = NSClassFromString(actionClassName)) == Nil) {
+  if ((*(&actionClass) = NGClassFromString(actionClassName)) == Nil) {
     [self errorWithFormat:@"did not find direct action class %@",
             actionClassName];
     actionClass = [WODirectAction class];

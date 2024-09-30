@@ -110,6 +110,9 @@ static Class         CompoundElemClass = Nil;
 static NSNumber      *yesNum   = nil;
 static WOAssociation *yesAssoc = nil;
 
++ (int)version {
+  return 1;
+}
 + (void)initialize {
   NSUserDefaults  *ud;
   NGLoggerManager *lm;
@@ -173,7 +176,7 @@ static WOAssociation *yesAssoc = nil;
     NSLog(@"builder class: %@", cn);
 #endif
     
-    if ((clazz = NSClassFromString(cn)) == Nil) {
+    if ((clazz = NGClassFromString(cn)) == Nil) {
       if (missingBuilders == nil) 
         missingBuilders = [NSMutableArray arrayWithCapacity:16];
       [missingBuilders addObject:cn];
@@ -212,13 +215,13 @@ static WOAssociation *yesAssoc = nil;
   if (_className == nil)
     return [[[self alloc] init] autorelease];
     
-  first = [[[NSClassFromString(_className) alloc] init] autorelease];
+  first = [[[NGClassFromString(_className) alloc] init] autorelease];
     
   va_start(ap, _className);
   for (current = first; (cn = va_arg(ap, id)); ) {
     WOxElemBuilder *nx;
 
-    nx = [[NSClassFromString(cn) alloc] init];
+    nx = [[NGClassFromString(cn) alloc] init];
     [current setNextBuilder:nx];
     current = [nx autorelease];
   }
@@ -465,7 +468,7 @@ static WOAssociation *yesAssoc = nil;
     Class    clazz;
     
     className = [defaultAssocMap objectForKey:ns];
-    clazz = NSClassFromString(className);
+    clazz = NGClassFromString(className);
     
     if (clazz == Nil) {
       [self warnWithFormat:@"did not find association class: '%@'",

@@ -37,7 +37,7 @@ int WOApplicationMain(NSString *_appClassName, int argc, const char *argv[])
   {
     WOApplication *app;
     
-    app = [[NSClassFromString(_appClassName) alloc] init];
+    app = [[NGClassFromString(_appClassName) alloc] init];
 
     [app run];
     [app release]; app = nil;

@@ -29,6 +29,16 @@
 - (id)initWithConfig:(NSMutableDictionary *)_config {
   unsigned count = (unsigned)[_config count];
 
+  // hh(2024-09-24): This was removed in SOGo.nu fork.
+  // Presumably to allow for WOHyperlink's w/o actions (e.g. JS driven ones)
+  #if 0
+  if ((self->initialCount = count = [_config count]) == 0) {
+    NSLog(@"%s: missing associations for WOHyperlink !", __PRETTY_FUNCTION__);
+    RELEASE(self);
+    return nil;
+  }
+  #endif
+  
   self->sidInUrl = YES;
   
   //NSLog(@"CONFIG: %@", _config);

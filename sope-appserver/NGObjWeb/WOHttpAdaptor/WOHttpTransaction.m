@@ -71,6 +71,9 @@ static NGLogger *perfLogger        = nil;
 static NGLogger *transActionLogger = nil;
 static NSDictionary *standardCapitalizedHeaders = nil;
 
++ (int)version {
+  return 2;
+}
 + (void)initialize {
   NSUserDefaults  *ud;
   NGLoggerManager *lm;
@@ -619,8 +622,10 @@ static int logCounter = 0;
     if (![self _run])
       ok = NO;
   }
-  NS_HANDLER
+  NS_HANDLER {
+    assert(localException != nil);
     ok = [self _catchedException:localException];
+  }
   NS_ENDHANDLER;
   
   if (self->asyncResponseToken == nil) {
