@@ -373,6 +373,7 @@ static NSNull *null = nil;
 }
 
 - (void)checkForDuplicates {
+  #if HEAVY_DEBUG_POSITIONS // this can be very slow!!
   unsigned j;
   
   for (j = 0; j < self->count; j++) {
@@ -385,6 +386,7 @@ static NSNull *null = nil;
                 j, i, self->positions[j].x, self->positions[j].y);
     }
   }
+  #endif // HEAVY_DEBUG_POSITIONS
 }
 
 - (void)addPosition:(unsigned)_x :(unsigned)_y {
