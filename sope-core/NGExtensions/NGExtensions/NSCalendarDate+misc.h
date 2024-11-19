@@ -89,7 +89,7 @@
     d2 = [d1 dateByAddingYear:0 month:3 day:0];
 
     [d2 hourOfDay] will be '15' though the timezone changed from
-    MET to MET-DST.
+    CET to CEST.
 
     -dateByAddingYears:months:days:hours:minutes:seconds: which can
     be found in NSCalendarDate will not keep the clock time (the time

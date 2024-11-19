@@ -206,7 +206,7 @@ static NSTimeZone *parseTimeZone(const char *s, size_t len) {
   // TODO: optimize much further!
   //   first part: '16 Jun 2002'
   //   snd   part: '12:28[:11]'
-  //   trd   part: 'GMT' '+0000' '(MET)' '(+0200)'
+  //   trd   part: 'GMT' '+0000' '(CET)' '(+0200)'
 
   /* defaults for early aborts */
   tz     = gmt;
@@ -291,7 +291,7 @@ static NSTimeZone *parseTimeZone(const char *s, size_t len) {
   if (flag) goto finished; // this is: '12:23\0'
   bytes = pe + 1;
   
-  /* parse second - if available '13:13:23' vs '12:23\0' or '12:12 (MET)' */
+  /* parse second - if available '13:13:23' vs '12:23\0' or '12:12 (CET)' */
   
   while (isspace(*bytes)) /* skip spaces */
     bytes++;
@@ -312,7 +312,7 @@ static NSTimeZone *parseTimeZone(const char *s, size_t len) {
     bytes = pe + 1;
   }
   
-  /* parse timezone: 'GMT' '+0000' '(MET)' '(+0200)' */
+  /* parse timezone: 'GMT' '+0000' '(CET)' '(+0200)' */
   // TODO: do we need to parse: "-0700 (PDT)" as "PDT"?
   
   while (isspace(*bytes) || *bytes == '(') /* skip spaces */
