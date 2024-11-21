@@ -50,6 +50,7 @@ libEOControl_OBJC_FILES = \
 	EOKeyGlobalID.m			\
 	EOKeyValueArchiver.m		\
 	EOKeyValueCoding.m		\
+	EOKeyValueCoding+libFoundation.m		\
 	EOKeyValueQualifier.m		\
 	EONotQualifier.m		\
 	EONull.m			\
