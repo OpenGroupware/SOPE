@@ -140,6 +140,8 @@ static NSString *retStrForInt(int i) {
   doCheck  = [self->isScript boolValueInComponent:[_ctx component]];
     
   if ([activeTabKey isEqualToString:myTabKey] || doCheck) {
+    // hh(2024-11-22): What is `ADD_OWN_ELEMENTIDS` good for, it doesn't
+    //                 seem to be enabled?
 #if ADD_OWN_ELEMENTIDS
     [_ctx appendElementIDComponent:activeTabKey];
 #endif

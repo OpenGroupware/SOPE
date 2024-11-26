@@ -64,10 +64,12 @@ static NSTimeZone *gmt02 = nil;
     return nil;
   
   if (_length != 22 && _length != 25) {
-    NSLog(@"ERROR(%s): unexpected date string '%s', returning now"
-	  @" (expected format: '2001-07-26 14:00:00+02')", 
-	  __PRETTY_FUNCTION__, _cstr);
-    return [NSCalendarDate date];
+    NSLog(@"ERROR(%s): unexpected date string '%s', raising"
+	        @" (expected format: '2001-07-26 14:00:00+02')", 
+	        __PRETTY_FUNCTION__, _cstr);
+    [NSException raise:@"SQLite3AdaptorException"
+                 format:@"unexpected date string '%s'", cstr];
+    return nil;
   }
   strncpy(buf, _cstr, 25);
   buf[25] = '\0';

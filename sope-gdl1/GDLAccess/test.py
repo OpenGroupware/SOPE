@@ -86,7 +86,7 @@ def test_adaptor_data_source():
     
     hints = NSMutableDictionary();
     pks.addObject("company_id");
-    hints.setObjectForKey(NSTimeZone('MET'), "EOFetchResultTimeZoneHint")
+    hints.setObjectForKey(NSTimeZone('CET'), "EOFetchResultTimeZoneHint")
     fetchSpec.setHints(hints);
 
     sortOrderings = NSMutableArray();

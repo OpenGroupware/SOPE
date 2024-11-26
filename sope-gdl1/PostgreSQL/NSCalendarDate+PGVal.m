@@ -28,15 +28,16 @@
 #include "PostgreSQL72Channel.h"
 #include "common.h"
 
-// Sybase Date: Oct 21 1997  9:52:26:000PM 
+// Date: Oct 21 1997  9:52:26:000PM 
 static NSString *PGSQL_DATETIME_FORMAT = @"%b %d %Y %I:%M:%S:000%p";
 
 @implementation NSCalendarDate(PostgreSQL72Values)
 
 /*
-  Format: '2001-07-26 14:00:00+02'      (len 22)
-          '2001-07-26 14:00:00+09:30'   (len 25)
-	  '2008-01-31 14:00:57.249+01'  (len 26)
+  Format: '2001-07-26 14:00:00+02'        (len 22)
+          '2001-07-26 14:00:00+09:30'     (len 25)
+	        '2008-01-31 14:00:57.249+01'    (len 26)
+          '2024-11-25 16:01:36.549802+00' (len 29) hh(2024-11-26)
            0123456789012345678901234
   
   Matthew: "07/25/2003 06:00:00 CDT".
@@ -53,7 +54,7 @@ static NSTimeZone *gmt02 = nil;
   attribute:(EOAttribute *)_attribute
   adaptorChannel:(PostgreSQL72Channel *)_channel
 {
-  char           buf[28];
+  char           buf[32];
   char           *p;
   NSTimeZone     *attrTZ;
   NSCalendarDate *date;
@@ -63,49 +64,63 @@ static NSTimeZone *gmt02 = nil;
   if (_length == 0)
     return nil;
   
-  if (_length != 22 && _length != 25 && _length != 26) {
+  if (_length != 22 && _length != 25 && _length != 26 && _length != 29) {
     // TODO: add support for "2001-07-26 14:00:00" (len=19)
     // TBD: add support for "2008-01-31 14:00:57.249+01" (len=26)
-    NSLog(@"ERROR(%s): unexpected string '%s' for date type '%@', returning "
-	  @"now (expected format: '2001-07-26 14:00:00+02')", 
-	  __PRETTY_FUNCTION__,
-          _cstr, _type);
-    return [NSCalendarDate date];
+    NSLog(@"ERROR(%s): unexpected string '%s' for date type '%@' "
+	        @"(expected format: '2001-07-26 14:00:00+02')", 
+	        __PRETTY_FUNCTION__, _cstr, _type);
+    [NSException raise:@"PGAdaptorException"
+                 format:@"Unexpected date string '%s' type %@", _cstr, _type];
+    return nil;
   }
-  strncpy(buf, _cstr, 26);
-  buf[26] = '\0';
+  strncpy(buf, _cstr, 29);
+  buf[29] = '\0';
   
+  /*
+    Format: '2001-07-26 14:00:00+02'        (len 22)
+            '2001-07-26 14:00:00+09:30'     (len 25)
+            '2008-01-31 14:00:57.249+01'    (len 26)
+            '2024-11-25 16:01:36.549802+00' (len 29) hh(2024-11-26)
+             0123456789012345678901234
+    
+    Matthew: "07/25/2003 06:00:00 CDT".
+  */
+  // strsep() - locate delimiter, replace it w/ `\0`, update reference after
+  //            the delim, return the original input.
   tok = buf;
-  year  = atoi(strsep(&tok, "-"));
-  month = atoi(strsep(&tok, "-"));
-  day   = atoi(strsep(&tok, " "));
-  hour  = atoi(strsep(&tok, ":"));
-  min   = atoi(strsep(&tok, ":"));
+  year  = atoi(strsep(&tok, "-")); // 2001-07-26 14:00:00+02
+  month = atoi(strsep(&tok, "-")); // 07-26 14:00:00+02
+  day   = atoi(strsep(&tok, " ")); // 26 14:00:00+02
+  hour  = atoi(strsep(&tok, ":")); // 14:00:00+02
+  min   = atoi(strsep(&tok, ":")); // 00:00+02
   
-  tzOffset = 0;
+  // parse timezone, this DOES modify `tok`/`buf` during time parsing
+  tzOffset = 0; // ptr to timezone part
   if (tok != NULL && (p = strchr(tok, '+')) != NULL)
-    tzOffset = +1;
+    tzOffset = +1; // positive tz
   else if (tok != NULL && (p = strchr(tok, '-')) != NULL)
-    tzOffset = -1;
+    tzOffset = -1; // negative tz
   else
     tzOffset = 0; // TBD: warn?
-  if (tzOffset != 0) {
+  if (tzOffset != 0) { // has timezone, parse it. `p` is set
     int tzHours, tzMins = 0;
     
-    p++; // skip +/-
-    tzHours = atoi(strsep(&p, ":"));
-    if (p != NULL) tzMins = atoi(p);
+    p++; // skip +/-   in: `+02` or `-02`
+    tzHours = atoi(strsep(&p, ":")); // in: 02:30
+    if (p != NULL) tzMins = atoi(p); // if the offset is `+02:30`
     
-    tzMins = tzHours * 60 + tzMins;
-    tzOffset = tzOffset < 0 ? -tzMins : tzMins;
+    tzMins   = tzHours * 60 + tzMins; // calculate minutes
+    tzOffset = tzOffset < 0 ? -tzMins : tzMins; // apply positive/negative
   }
-  
+
   /* extract seconds */
-  sec = atoi(strsep(&tok, ":+."));
+  // this does NOT preserve the milliseconds part (.249 or .549802)
+  sec = atoi(strsep(&tok, ":+.")); // in: 00+02 or 36.549802+00
   
 #if HEAVY_DEBUG    
   NSLog(@"DATE: %s => %04i-%02i-%02i %02i:%02i:%02i",
-	buf, year, month, day, hour, min, sec);
+      	buf, year, month, day, hour, min, sec);
 #endif
 #if HEAVY_DEBUG
   NSLog(@"DATE: %s => OFFSET %i", _cstr, tzOffset);
@@ -160,6 +175,11 @@ static NSTimeZone *gmt02 = nil;
           @"year=%i,month=%i,day=%i,hour=%i,minute=%i,second=%i, tz=%@",
           __PRETTY_FUNCTION__, _cstr,
           year, month, day, hour, min, sec, attrTZ);
+    [NSException raise:@"PGAdaptorException"
+                 format:
+                   @"Could not construct date from string '%s': "
+                   @"year=%i,month=%i,day=%i,hour=%i,minute=%i,second=%i, tz=%@",
+                   _cstr, year, month, day, hour, min, sec, attrTZ];
   }
   return date;
 }
