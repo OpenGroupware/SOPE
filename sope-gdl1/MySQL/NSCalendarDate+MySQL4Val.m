@@ -85,7 +85,7 @@ static NSTimeZone *gmt02 = nil;
   return self;
 }
 
-#if 0
+#if 0 // hh(2024-11-26): WAS COMMENTED OUT, probably init'ed differently now
 - (id)initWithMySQL4Data:(const void *)_value length:(int)_length {
   static unsigned char buf[28]; // reused buffer, THREAD
   const char *_cstr = _value;
