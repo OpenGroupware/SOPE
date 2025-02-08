@@ -344,7 +344,7 @@ static Class NSArrayClass = Nil;
   NGHttpCookie *cookie = nil;
   unsigned     pos, toGo;
   
-  if (_bytes == nil) {
+  if (_bytes == NULL) {
     NSLog(@"ERROR(%s:%i): got `nil` value for cookie pair: %u",
           __PRETTY_FUNCTION__, __LINE__, _len);
     return nil;
