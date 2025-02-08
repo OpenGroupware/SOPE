@@ -446,7 +446,7 @@ static Class NSArrayClass = Nil;
     
     NSLog(@"ERROR(%s:%i): got invalid cookie pairs for field '%@' data '%@', class=%@.",
           __PRETTY_FUNCTION__, __LINE__,
-          _field, s != nil ? "<nil>" : s, [_data class]);
+          _field, s != nil ? @"<nil>" : s, [_data class]);
     RELEASE(s);
 #endif
     // return nil;
