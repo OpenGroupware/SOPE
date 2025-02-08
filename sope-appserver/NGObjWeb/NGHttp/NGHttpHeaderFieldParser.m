@@ -341,8 +341,14 @@ static Class NSArrayClass = Nil;
 - (id)parseValuePart:(const char *)_bytes length:(unsigned)_len
   zone:(NSZone *)_z
 {
-  NGHttpCookie *cookie   = nil;
+  NGHttpCookie *cookie = nil;
   unsigned     pos, toGo;
+  
+  if (_bytes == nil) {
+    NSLog(@"ERROR(%s:%i): got `nil` value for cookie pair: %u",
+          __PRETTY_FUNCTION__, __LINE__, _len);
+    return nil;
+  }
 
   for (pos = 0, toGo = _len; (toGo > 0) && (_bytes[pos] != '='); toGo--, pos++)
     ;
@@ -438,9 +444,9 @@ static Class NSArrayClass = Nil;
     else
       s = _data;
     
-    NSLog(@"ERROR(%s:%i): got invalid cookie pairs for field %@ data %@.",
+    NSLog(@"ERROR(%s:%i): got invalid cookie pairs for field '%@' data '%@', class=%@.",
           __PRETTY_FUNCTION__, __LINE__,
-          _field, s);
+          _field, s != nil ? "<nil>" : s, [_data class]);
     RELEASE(s);
 #endif
     // return nil;
