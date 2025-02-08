@@ -29,10 +29,10 @@ static Class NSArrayClass = Nil;
 @implementation NGHttpStringHeaderFieldParser
 
 - (id)parseValue:(id)_data ofHeaderField:(NSString *)_field {
-  unsigned              len   = 0;
-  const unsigned char   *src  = NULL;
-  id                     value = nil;
-  NSString *str = nil;
+  unsigned            len   = 0;
+  const unsigned char *src  = NULL;
+  id                  value = nil;
+  NSString            *str  = nil;
 
   if ([_data isKindOfClass:[NSData class]]) {
     len   = [_data length];
