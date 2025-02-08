@@ -704,7 +704,7 @@ static NSString *defaultCompRqHandlerClassName = @"WOComponentRequestHandler";
   if ([self isRefusingNewSessions] &&
       ([self activeSessionsCount] < [self minimumActiveSessionsCount])) {
     /* check whether the application instance is still valid .. */
-    [self debugWithFormat:
+    [self logWithFormat:
             @"application terminates because it refuses new sessions and "
             @"the active session count (%i) is below the minimum (%i).",
             [self activeSessionsCount], [self minimumActiveSessionsCount]];
@@ -1209,7 +1209,7 @@ nbuckets, nindices, narrays, idxsize);
 }
 
 - (void)terminate {
-  [self debugWithFormat:
+  [self logWithFormat:
           @"application terminates:\n"
           @"  %i active sessions\n"
           @"  %i minimum active sessions\n"
