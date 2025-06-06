@@ -36,6 +36,8 @@ static NSString *PGSQL_DATETIME_FORMAT = @"%b %d %Y %I:%M:%S:000%p";
 /*
   Format: '2001-07-26 14:00:00+02'        (len 22)
           '2001-07-26 14:00:00+09:30'     (len 25)
+  those can have .1 to .999999 (microseconds)
+          '2008-01-31 14:00:57.2+01'      (len 24)
 	        '2008-01-31 14:00:57.249+01'    (len 26)
           '2024-11-25 16:01:36.549802+00' (len 29) hh(2024-11-26)
            0123456789012345678901234
@@ -64,7 +66,7 @@ static NSTimeZone *gmt02 = nil;
   if (_length == 0)
     return nil;
   
-  if (_length != 22 && _length != 25 && _length != 26 && _length != 29) {
+  if (_length != 22 && _length != 25 && !(_length >= 24 && _length <= 29)) {
     // TODO: add support for "2001-07-26 14:00:00" (len=19)
     // TBD: add support for "2008-01-31 14:00:57.249+01" (len=26)
     NSLog(@"ERROR(%s): unexpected string '%s' for date type '%@' "
