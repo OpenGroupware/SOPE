@@ -1161,9 +1161,9 @@ NSString *EOBindVariableValueKey       = @"value";
 - (NSString *)sqlStringForSelector:(SEL)_selector value:(id)_value {
   if ((_value == null) || (_value == nil)) {
     if (sel_isEqual(_selector, EOQualifierOperatorEqual))
-      return @"is";
+      return @"IS";
     else if (sel_isEqual(_selector, EOQualifierOperatorNotEqual))
-      return @"is not";
+      return @"IS NOT";
   }
   else {
     if (sel_isEqual(_selector, EOQualifierOperatorEqual))
@@ -1182,6 +1182,8 @@ NSString *EOBindVariableValueKey       = @"value";
     return @">=";
   else if (sel_isEqual(_selector, EOQualifierOperatorLike))
     return @"LIKE";
+  else if (sel_isEqual(_selector, EOQualifierOperatorCaseInsensitiveLike))
+    return @"ILIKE";
   else {
     return [NSString stringWithFormat:@"UNKNOWN<%@>",
                        NSStringFromSelector(_selector)];
@@ -1212,6 +1214,7 @@ NSString *EOBindVariableValueKey       = @"value";
 }
 
 - (NSString *)sqlStringForKeyValueQualifier:(EOKeyValueQualifier *)_q {
+  SEL sel = [_q selector];
   NSMutableString *s;
   NSString        *sql;
   id              v;
@@ -1224,12 +1227,12 @@ NSString *EOBindVariableValueKey       = @"value";
   [s appendString:sql];
   
   [s appendString:@" "];
-  sql = [self sqlStringForSelector:[_q selector] value:v];
+  sql = [self sqlStringForSelector:sel value:v];
   [s appendString:sql];
   [s appendString:@" "];
   
-  if (([_q selector] == EOQualifierOperatorLike) ||
-      ([_q selector] == EOQualifierOperatorCaseInsensitiveLike))
+  if ((sel == EOQualifierOperatorLike) ||
+      (sel == EOQualifierOperatorCaseInsensitiveLike))
     v = [[self class] sqlPatternFromShellPattern:v];
   
   sql = [self sqlStringForValue:v attributeNamed:[_q key]];
