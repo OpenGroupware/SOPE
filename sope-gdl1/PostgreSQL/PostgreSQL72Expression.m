@@ -41,7 +41,8 @@
   lock:(BOOL)flag
   qualifier:(EOSQLQualifier *)qualifier
   fetchOrder:(NSArray *)fetchOrder
-  channel:(EOAdaptorChannel *)channel {
+  channel:(EOAdaptorChannel *)channel 
+{
 
   lock = flag;
   [super selectExpressionForAttributes:attributes
@@ -50,6 +51,27 @@
          fetchOrder:fetchOrder
          channel:channel];
   return self;
+}
+
+- (NSString *)sqlStringForKeyValueQualifier:(EOKeyValueQualifier *)_q {
+  SEL sel = [_q selector];
+  if (sel_isEqual(sel, EOQualifierOperatorLike) ||
+      sel_isEqual(sel, EOQualifierOperatorCaseInsensitiveLike))
+  {
+    NSMutableString *s = [NSMutableString stringWithCapacity:100];        
+    [s appendString:[[self class] 
+      formatSQLString:[self sqlStringForAttributeNamed:[_q key]] 
+      format:nil]];
+    // Cast, LIKE only works on TEXT in modern PostgreSQL.
+    [s appendString:
+        sel_isEqual(sel, EOQualifierOperatorCaseInsensitiveLike)
+        ? @"::TEXT ILIKE ": @"::TEXT LIKE "];
+    id v = [[self class] sqlPatternFromShellPattern:[_q value]];
+    [s appendString:[self sqlStringForValue:v attributeNamed:[_q key]]];
+    return s;
+  }
+  
+  return [super sqlStringForKeyValueQualifier: _q];
 }
 
 - (NSString *)fromClause {
