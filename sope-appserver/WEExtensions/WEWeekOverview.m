@@ -451,8 +451,8 @@ _applyIndex(WEWeekOverview *self, WOComponent *comp, unsigned _idx)
     if (idx >= 0)
       idx = (idx % 2) ? idx + 1: idx +2;
     
-    diff = [ed timeIntervalSinceDate:startWeek];
-    
+    diff = [ed timeIntervalSinceDate:startWeek] - 1;
+
     idx2 = floor((diff / SecondsPerWeek) * 14);
     idx2 = (idx2 > 13) ? 13 : idx2;
 
