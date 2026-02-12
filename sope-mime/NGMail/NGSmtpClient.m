@@ -381,8 +381,10 @@
 }
 
 // authentication
-- (BOOL) plainAuthenticateUser: (NSString *) username
-                  withPassword: (NSString *) password {
+- (BOOL) authenticateUser: (NSString *) username
+                  withPassword: (NSString *) password
+                    withMethod: (NSString *) method
+{
   BOOL rc;
 
   if (self->extensions.hasAuthPlain && [username length] > 0) {
@@ -392,28 +394,50 @@
     NSString *authString;
     NGSmtpResponse *reply;
 
-    utf8Username = [username UTF8String];
-    utf8Password = [password UTF8String];
-    if (!utf8Password)
-      utf8Password = 0;
+    if(!method)
+      method = @"PLAIN";
+    
+    if([method isEqualToString: @"xoauth2"])
+    {
+      NSString *oauth2Password, *oauth2Username;
+      oauth2Username = [NSString stringWithFormat: @"user=%@", username];
+      oauth2Password = [NSString stringWithFormat: @"auth=Bearer %@", password];
+      utf8Username = [oauth2Username UTF8String];
+      utf8Password = [oauth2Password UTF8String];
 
-    lenUsername = strlen (utf8Username);
-    lenPassword = strlen (utf8Password);
-    buflen = lenUsername * 2 + lenPassword + 2;
-    buffer = malloc (sizeof (char) * (buflen + 1));
-    sprintf (buffer, "%s%c%s%c%s",
-             utf8Username, 0, utf8Username, 0, utf8Password);
-    authString = [[NSData dataWithBytesNoCopy: buffer
-                                       length: buflen
-                                 freeWhenDone: YES]
-                   stringByEncodingBase64];
+      lenUsername = strlen(utf8Username);
+      lenPassword = strlen(utf8Password);
+      buflen = lenUsername + lenPassword + 3;
+      buffer = malloc (sizeof (char) * (buflen + 1));
+      sprintf (buffer, "%s%c%s%c%c", utf8Username, 1, utf8Password, 1, 1);
+      authString = [[NSData dataWithBytesNoCopy: buffer
+                                         length: buflen
+                                   freeWhenDone: YES] stringByEncodingBase64];
+    }
+    else
+    {
+      utf8Username = [username UTF8String];
+      utf8Password = [password UTF8String];
+      if (!utf8Password)
+        utf8Password = 0;
+
+      lenUsername = strlen (utf8Username);
+      lenPassword = strlen (utf8Password);
+      buflen = lenUsername * 2 + lenPassword + 2;
+      buffer = malloc (sizeof (char) * (buflen + 1));
+      sprintf (buffer, "%s%c%s%c%s", utf8Username, 0, utf8Username, 0, utf8Password);
+      authString = [[NSData dataWithBytesNoCopy: buffer
+                                         length: buflen
+                                   freeWhenDone: YES] stringByEncodingBase64];
+    }
+
     authString = [authString stringByReplacingOccurrencesOfString:@"\n" withString:@""];
-    reply = [self sendCommand: @"AUTH PLAIN"];
+    reply = [self sendCommand: [NSString stringWithFormat:@"AUTH %@", method]];
 
     if ([reply code] == NGSmtpServerChallenge)
-      {
-        reply = [self sendCommand: authString];
-      }
+    {
+      reply = [self sendCommand: authString];
+    }
 
     rc = ([reply code] == NGSmtpAuthenticationSuccess);
   }
@@ -458,6 +482,19 @@
   NGSmtpReplyCode code  = -1;
 
   line = [self->text readLineAsString];
+  if([line length] == 3) {
+    //Invalid but can happen with some smtp server that does not follow correctly the smtp specs
+    //and only send the code number instead of the code + a space.
+    code = [[line substringToIndex:3] intValue];
+    if(code == 0)
+    {
+      NSLog(@"SMTP: reply has invalid format and is not a code of 3 chars (%@)", line);
+      return nil;
+    }
+    desc = [NSMutableString stringWithCapacity:[line length]];
+    return [NGSmtpResponse responseWithCode:code text:desc];
+  }
+
   if ([line length] < 4) {
     NSLog(@"SMTP: reply has invalid format (%@)", line);
     return nil;
@@ -754,11 +791,16 @@
     return YES;
   }
   else if ([[reply text] length])
-    {
-      NSLog(@"SMTP(RCPT TO) error: %@", [reply text]);
+    { 
+      NSString* smtpError = [reply text];
+      NSLog(@"SMTP(RCPT TO) error: %@", smtpError);
+      if(![smtpError containsString:rcpt])
+      {
+        smtpError = [NSString stringWithFormat: @"%@ - %@", smtpError, rcpt];
+      }
       [NSException raise: @"SMTPException"
                   format: @"%@",
-                  [reply text]];
+                  smtpError];
     }
   return NO;
 }
