@@ -1,3 +1,153 @@
+commit db84a9213cdba79b28a7210e04b52c523c1a06ad
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Thu Aug 7 19:28:10 2025 +0200
+
+    fix(ActiveSync): ActiveSync dispatcher was not called if the 'Cmd' query was first
+    
+    This won the award of "the most unrelated thing to cause a problem"
+
+M	sope-appserver/NGObjWeb/SoObjects/SoObjectRequestHandler.m
+
+commit 280104e45c20519ac4849ebf8bca114d91383543
+Author: Stefan Bühler <source@stbuehler.de>
+Date:   Sun Jun 29 10:21:32 2025 +0200
+
+    NGHashMap: keep root->last consistent to fix segfault adding duplicate key after copy
+    
+    segfault because root->last is NULL:
+        #0 -[NGMutableHashMap addObjects:count:forKey:]
+        #1 -[NGMutableHashMap addObject:forKey:]
+        #2 -[NGHttpRequest(WOSupport) _decodeFormContentURLParameters:]
+        #3 -[NGHttpRequest(WOSupport) formParameters]
+    
+    when POST and GET set the same parameter; trigger like this:
+    
+        curl -d 'x=' 'https://.../SOGo/?x='
+
+M	sope-core/NGExtensions/NGHashMap.m
+
+commit 3146fbdb6ff3314e37e5c3682deeeef7d0f32064
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Wed Jun 25 09:36:14 2025 +0200
+
+    Update ChangeLog
+
+M	ChangeLog
+
+commit 927aaeadcff6a55416e1ef29faa7bbe90d63daea
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Tue Jun 17 15:28:53 2025 +0200
+
+    fix(smtp): allow smtp replies with only 3 chars (being the number code) instead of 4 (code + space)
+
+M	sope-mime/NGMail/NGSmtpClient.m
+
+commit 2bec3d956c766b9cfbb37bef1f1868cea1293974
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Wed Jun 11 12:53:22 2025 +0200
+
+    fix(proxy): don't check bearer token auth
+
+M	sope-appserver/NGObjWeb/WOHttpAdaptor/WOHttpTransaction.m
+
+commit 88611b402b9a393c031ebed1383e1f6a36fb8bd1
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Tue May 27 09:54:48 2025 +0200
+
+    fix(mysl): add decinmal type to nsnumber type
+
+M	sope-gdl1/MySQL/NSNumber+MySQL4Val.m
+
+commit 29fba59e01259fc461fc6c60000ce395d1bbdde2
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Wed Apr 30 11:02:32 2025 +0200
+
+    Update ChangeLog
+
+M	ChangeLog
+
+commit 5342b3e7a5e622830ec0a85a0873bd5cf325a99e
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Wed Apr 9 15:34:40 2025 +0200
+
+    fix(imap): properly quit the response parser in case of unexpected char
+
+M	sope-mime/NGImap4/NGImap4ResponseParser.m
+
+commit 6a9af0c96eac78de771a7d11c505d9e9149c07b7
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Mon Mar 24 10:37:51 2025 +0100
+
+    Update ChangeLog
+
+M	ChangeLog
+
+commit 61aef7a85966c8f7af00150e45d5c7d63da278d3
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Thu Feb 27 09:39:07 2025 +0100
+
+    feat(login): add xoauth2 and openid auth
+
+M	sope-appserver/NGObjWeb/NGObjWeb/WORequest.h
+M	sope-appserver/NGObjWeb/SoObjects/SoCookieAuthenticator.h
+M	sope-appserver/NGObjWeb/SoObjects/SoCookieAuthenticator.m
+M	sope-appserver/NGObjWeb/SoObjects/SoHTTPAuthenticator.h
+M	sope-appserver/NGObjWeb/SoObjects/SoHTTPAuthenticator.m
+M	sope-appserver/NGObjWeb/SoObjects/SoObject+Traversal.m
+M	sope-appserver/NGObjWeb/SoObjects/SoObjectRequestHandler.m
+M	sope-appserver/NGObjWeb/SoObjects/SoUser.h
+M	sope-appserver/NGObjWeb/SoObjects/SoUser.m
+M	sope-appserver/NGObjWeb/WORequest.m
+M	sope-mime/NGImap4/NGImap4Client.m
+M	sope-mime/NGImap4/NGImap4ConnectionManager.h
+M	sope-mime/NGImap4/NGImap4ConnectionManager.m
+M	sope-mime/NGImap4/NGSieveClient.h
+M	sope-mime/NGImap4/NGSieveClient.m
+M	sope-mime/NGMail/NGSmtpClient.h
+M	sope-mime/NGMail/NGSmtpClient.m
+
+commit 75ded41e3dbdaa890ae5b15a844eea7dd9525597
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Tue Nov 26 10:30:25 2024 +0100
+
+    fix(https): don't shutdown the socket twice if error the first time
+    
+    In some cases the second shutdown was hanging
+
+M	sope-core/NGStreams/NGActiveSSLSocket.m
+
+commit 82ff9ceb6538052d26340bc1a5a7cf265e1de544
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Mon Nov 18 14:27:31 2024 +0100
+
+    chore(smtp): add the recipient in smtp error message if it is not already the case
+
+M	sope-mime/NGMail/NGSmtpClient.m
+
+commit f77f86a78dfa9d676e836ce92827494b34df2f44
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Tue Oct 8 12:24:43 2024 +0200
+
+    Update ChangeLog
+
+M	ChangeLog
+
+commit f08dfce90d626f30b1f80165bb537feb880ec207
+Author: smizrahi <seb.mizrahi@gmail.com>
+Date:   Tue Aug 13 19:31:20 2024 +0200
+
+    fix(packaging): Add config.make as dependency of build-stamp
+
+M	packaging/debian/rules
+
+commit 64776d9ee5eeb681a45303fac559aa1f36d16ed7
+Author: Hivert Quentin <quentin.hivert.fr@gmail.com>
+Date:   Wed Aug 7 11:13:50 2024 +0200
+
+    Update ChangeLog
+
+M	ChangeLog
+
 commit 4524ecafe27c8cfa9eef6977c6d4337d17ab99dd
 Author: smizrahi <seb.mizrahi@gmail.com>
 Date:   Wed Jul 24 17:41:51 2024 +0200

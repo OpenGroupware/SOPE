@@ -28,6 +28,7 @@
 #include "WORequest+So.h"
 #include <NGObjWeb/WOApplication.h>
 #include <NGObjWeb/WORequest.h>
+#include <NGObjWeb/WOCookie.h>
 #include <NGObjWeb/WOResponse.h>
 #include <NGObjWeb/WOElement.h>
 #include <NGObjWeb/WOTemplate.h>
@@ -169,7 +170,7 @@ static NSString *redirectURISafetySuffix = nil;
     return _traversalPath;
   
   for (i = 0; i < count; i++) {
-    NSString *key;
+    NSString *key, *previous_key;
     unsigned klen;
     NSString *m;
     
@@ -181,7 +182,11 @@ static NSString *redirectURISafetySuffix = nil;
     /* calculate method name */
     
     m = nil;
-    if (klen == 3 && [key isEqualToString:@"Cmd"]) {
+    if([_traversalPath count] > 0)
+      previous_key = [_traversalPath lastObject];
+    else
+      previous_key = @"";
+    if (klen == 3 && [key isEqualToString:@"Cmd"] && ![previous_key isEqualToString:@"Microsoft-Server-ActiveSync"]) {
       /* 
 	 Check for ASP style ?Cmd query parameter (required in ZideStore),
 	 the value is the additional path we need to add.
@@ -682,6 +687,24 @@ static NSString *redirectURISafetySuffix = nil;
   }
   
   [self->dispatcherRules reset];
+
+  //Check if the authenticator need to add cookies
+  if(authenticator)
+  {
+    NSArray *listCookies;
+    NSEnumerator *cookies;
+    WOCookie *cookie;
+
+    listCookies = [authenticator getCookiesIfNeeded: _ctx];
+    if(listCookies && [listCookies isKindOfClass:[NSArray class]])
+    {
+      cookies = [listCookies objectEnumerator];
+      while((cookie = [cookies nextObject]))
+      {
+        [r addCookie: cookie];
+      }
+    }
+  }
   
   return r;
 }

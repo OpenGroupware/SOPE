@@ -40,6 +40,7 @@
 #include <EOControl/EOQualifier.h>
 #include <EOControl/EOSortOrdering.h>
 #import "NGExtensions/NSException+misc.h"
+#import "NGExtensions/NSString+Encoding.h"
 
 #if LIB_FOUNDATION_LIBRARY
 #  include <extensions/DefaultScannerHandler.h>
@@ -1101,13 +1102,15 @@ NSString *EOBindVariableValueKey       = @"value";
 
   if ((len = [_pattern length]) > 0) {
     unsigned   cstrLen = [_pattern cStringLength];
-    char       cstrBuf[cstrLen + 1];
     const char *cstr;
     char       buf[len * 3 + 1];
     unsigned   i;
     BOOL       didSomething = NO;
 
-    [_pattern getCString:cstrBuf];
+    NSData *data = [_pattern dataUsingEncoding:NSUTF8StringEncoding];
+    NSMutableData *mutableData = [data mutableCopy];
+    [mutableData appendBytes:"\0" length:1];
+    char* cstrBuf = (char*)[mutableData bytes];
     cstr = cstrBuf;
     
     for (i = 0; *cstr; cstr++) {
@@ -1143,8 +1146,11 @@ NSString *EOBindVariableValueKey       = @"value";
     }
     buf[i] = '\0';
     
+    // return (didSomething)
+    //   ? (NSString *)[NSString stringWithCString:buf length:i]
+    //   : (NSString *)_pattern;
     return (didSomething)
-      ? (NSString *)[NSString stringWithCString:buf length:i]
+      ? (NSString *)[NSString stringWithCString:buf encoding: NSUTF8StringEncoding]
       : (NSString *)_pattern;
   }
   return _pattern;

@@ -60,6 +60,12 @@
   return NO;
 }
 
+- (NSArray *)getCookiesIfNeeded: (WOContext *)_ctx
+{
+  //Needs to be override by children if needed
+  return nil;
+}
+
 + (NSArray *)parseCredentials:(NSString *)_creds {
   /*
     returns an array containing two items, user and password.
