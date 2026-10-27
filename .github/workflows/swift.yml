@@ -19,7 +19,7 @@ jobs:
     container: ${{ matrix.image }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: Update APT and Install Cache Deps
         run:  |
           apt-get -y -qq update
