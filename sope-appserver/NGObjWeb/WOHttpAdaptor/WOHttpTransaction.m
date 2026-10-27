@@ -443,7 +443,11 @@ static int logCounter = 0;
     }
   }
   else if (self->woRequest != nil) {
-    [self errorWithFormat:@"got no response for request %@ ..",
+    /* In a watchdog/child setup, this typically follows a child socket
+       reset that the watchdog already logs as ERROR. Keep it visible
+       (the missing response IS surprising) but at WARN so the upstream
+       ERROR remains the canonical signal. */
+    [self warnWithFormat:@"got no response for request %@ ..",
             self->woRequest];
       
     self->woResponse = [[self generateMissingResponse] retain];

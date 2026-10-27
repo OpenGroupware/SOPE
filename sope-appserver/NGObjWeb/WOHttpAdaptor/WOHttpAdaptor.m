@@ -362,7 +362,11 @@ static BOOL     debugOn                      = NO;
 /* run-loop */
 
 - (void)_serverCatched:(NSException *)_exc {
-  [self errorWithFormat:@"http server caught: %@", _exc];
+  [self errorWithFormat:
+          @"http server caught: %@: %@ userInfo=%@",
+          NSStringFromClass([_exc class]),
+          [_exc reason] ? [_exc reason] : (NSString *)@"(no reason)",
+          [_exc userInfo] ? [_exc userInfo] : (NSDictionary *)@"(none)"];
   if (WOCoreOnHTTPAdaptorException) abort();
 }
 
