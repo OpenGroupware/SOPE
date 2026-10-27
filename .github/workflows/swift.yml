@@ -15,6 +15,7 @@ jobs:
       matrix:
         image:
           - ubuntu:noble
+          - ubuntu:resolute
     container: ${{ matrix.image }}
     steps:
       - name: Checkout Repository
