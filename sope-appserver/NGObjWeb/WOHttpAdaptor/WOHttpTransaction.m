@@ -443,7 +443,11 @@ static int logCounter = 0;
     }
   }
   else if (self->woRequest != nil) {
-    [self errorWithFormat:@"got no response for request %@ ..",
+    /* In a watchdog/child setup, this typically follows a child socket
+       reset that the watchdog already logs as ERROR. Keep it visible
+       (the missing response IS surprising) but at WARN so the upstream
+       ERROR remains the canonical signal. */
+    [self warnWithFormat:@"got no response for request %@ ..",
             self->woRequest];
       
     self->woResponse = [[self generateMissingResponse] retain];
@@ -734,7 +738,7 @@ static int logCounter = 0;
     id   body;
     BOOL doZip;
     BOOL isok = YES;
-    int length;
+    unsigned long long length;
     NSFileHandle *contentFile;
     
     doZip = [_response shouldZipResponseToRequest:_request];
@@ -782,7 +786,7 @@ static int logCounter = 0;
       }
     }
 
-    snprintf((char *)buf, sizeof(buf), "%d", length);
+    snprintf((char *)buf, sizeof(buf), "%llu", length);
     t1 = [[NSString alloc] initWithCString:(char *)buf];
     [_response setHeader:t1 forKey:@"content-length"];
     [t1 release]; t1 = nil;

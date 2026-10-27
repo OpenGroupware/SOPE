@@ -48,6 +48,7 @@
   /* SOPE specific */
   WOAssociation *method;
   WOAssociation *fragmentIdentifier;
+  WOAssociation *condition; /* when bound & NO, emit no <form> wrapper */
 }
 
 @end

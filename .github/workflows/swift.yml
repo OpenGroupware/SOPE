@@ -3,6 +3,7 @@ name: Build and Test
 on:
   push:
   pull_request:
+  workflow_dispatch:
   schedule:
     - cron: "15 15 * * 1"
 
@@ -14,10 +15,11 @@ jobs:
       matrix:
         image:
           - ubuntu:noble
+          - ubuntu:resolute
     container: ${{ matrix.image }}
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
       - name: Update APT and Install Cache Deps
         run:  |
           apt-get -y -qq update
