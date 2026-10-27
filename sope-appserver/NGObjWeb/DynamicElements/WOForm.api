@@ -13,6 +13,7 @@
   <!-- SOPE -->
   <binding name="method" passthrough="NO"/>
   <binding name="_wosid" passthrough="NO" defaults="YES/NO"/>
+  <binding name="condition" passthrough="NO" defaults="YES/NO"/>
 
   <validation message="either one of &apos;action&apos;, &apos;href&apos; or &apos;pageName&apos; may be bound, or one or both of &apos;actionClass&apos; or &apos;directActionName&apos; may be bound">
     <count test="&gt;1">

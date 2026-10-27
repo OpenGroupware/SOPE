@@ -62,6 +62,7 @@ static int debugTakeValues = -1;
     self->directActionName   = OWGetProperty(_config, @"directActionName");
     self->method             = OWGetProperty(_config, @"method");
     self->fragmentIdentifier = OWGetProperty(_config, @"fragmentIdentifier");
+    self->condition          = OWGetProperty(_config, @"condition");
     
     self->sidInUrl = (sidInUrlAssoc != nil)
       ? [sidInUrlAssoc boolValueInComponent:nil]
@@ -88,7 +89,8 @@ static int debugTakeValues = -1;
   [self->action             release];
   [self->pageName           release];
   [self->href               release];
-  [super dealloc];  
+  [self->condition          release];
+  [super dealloc];
 }
 
 /* handle active form elements */
@@ -101,6 +103,17 @@ static int debugTakeValues = -1;
 
 - (void)takeValuesFromRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
   static int alwaysPassIn = -1;
+
+  /* When condition is bound and evaluates to NO, behave as a transparent
+     pass-through: don't set isInForm, don't warn on nested forms, don't
+     do form-specific request processing. The template still gets a
+     chance to take values. */
+  if (self->condition != nil
+      && ![self->condition boolValueInComponent:[_ctx component]])
+  {
+    [self->template takeValuesFromRequest:_rq inContext:_ctx];
+    return;
+  }
 
   if (alwaysPassIn == -1) {
     alwaysPassIn = [[[NSUserDefaults standardUserDefaults]
@@ -199,6 +212,12 @@ static int debugTakeValues = -1;
 - (id)invokeActionForRequest:(WORequest *)_rq inContext:(WOContext *)_ctx {
   id result = nil;
   
+  if (self->condition != nil
+      && ![self->condition boolValueInComponent:[_ctx component]])
+  {
+    return [self->template invokeActionForRequest:_rq inContext:_ctx];
+  }
+
   [_ctx setInForm:YES];
 
   if ([_ctx currentElementID] == nil) {
@@ -353,6 +372,16 @@ static int debugTakeValues = -1;
   }
   
   sComponent = [_ctx component];
+
+  /* Conditional wrapper: when bound and NO, emit no <form> tags and
+     don't touch isInForm so nested WOForms aren't reported. The body
+     still renders normally. */
+  if (self->condition != nil
+      && ![self->condition boolValueInComponent:sComponent])
+  {
+    [self->template appendToResponse:_response inContext:_ctx];
+    return;
+  }
 
   if ([_ctx isInForm])
     [self warnWithFormat:@"detected nested WOForm, component: %@", sComponent];
