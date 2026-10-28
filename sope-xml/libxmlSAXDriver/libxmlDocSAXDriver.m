@@ -154,7 +154,8 @@ static void setLocator(void *udata, xmlSAXLocatorPtr _locator);
   
   NSAssert(self->ctxt == NULL, @"DocSAX parser context already setup !");
   
-  memcpy(&sax, &xmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+  memset(&sax, 0, sizeof(sax));
+  xmlSAXVersion(&sax, 1);
   sax.error              = error;
   sax.warning            = warning;
   sax.fatalError         = fatalError;

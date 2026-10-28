@@ -29,6 +29,7 @@
 
 #include <libxml/HTMLparser.h>
 #include <libxml/HTMLtree.h>
+#include <libxml/SAX2.h>
 
 @interface NSObject(contentHandlerExtensions)
 
@@ -219,7 +220,8 @@ static void setLocator(void *udata, xmlSAXLocatorPtr _locator);
     [self tearDownParser];
   }
   
-  memcpy(&sax, &htmlDefaultSAXHandler, sizeof(xmlSAXHandler));
+  memset(&sax, 0, sizeof(sax));
+  xmlSAX2InitHtmlDefaultSAXHandler(&sax);
   sax.error              = error;
   sax.warning            = warning;
   sax.fatalError         = fatalError;
